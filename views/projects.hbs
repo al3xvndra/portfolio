@@ -3,7 +3,10 @@
 {{#if projects.length}}
   <ul>
     {{#each projects}}
-      <li>{{id}} {{title}} {{category}}</li>
+      <li><a href="/projects/{{id}}">{{title}} {{category}}</a></li>
     {{/each}}
   </ul>
+
+{{else}}
+  <p>No projects atm</p>
 {{/if}}

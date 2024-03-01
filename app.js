@@ -13,16 +13,28 @@ app.engine(
 
 app.use(express.static("public"));
 
-app.get("/", function (requeste, response) {
+app.get("/", function (request, response) {
   response.render("home.hbs");
 });
 
-app.get("/projects", function (requeste, response) {
+app.get("/projects", function (request, response) {
   const model = {
     projects: data.projects,
   };
 
   response.render("projects.hbs", model);
+});
+
+app.get("/projects/:id", function (request, response) {
+  const id = request.params.id;
+
+  const project = data.projects.find((p) => p.id == id);
+
+  const model = {
+    project: project,
+  };
+
+  response.render("project.hbs", model);
 });
 
 app.listen(8080);
