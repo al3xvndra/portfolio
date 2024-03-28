@@ -4,6 +4,9 @@
   <ul>
     {{#each projects}}
       <li><a href="/projects/{{id}}">{{title}} {{category}}</a></li>
+      <form action="/projectDelete/{{id}}" method="POST">
+        <input type="submit" value="delete" />
+      </form>
     {{/each}}
   </ul>
 
