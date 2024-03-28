@@ -1,28 +1,53 @@
 <h1>project create</h1>
+{{#if errorMessages.length}}
+  {{#each errorMessages}}
+    <p>{{this}}</p>
+  {{/each}}
+{{/if}}
 
 <form action="" method="POST">
   <div>
-    <input type="text" name="title" placeholder="title" />
+    <input type="text" name="title" placeholder="title" value="{{title}}" />
   </div>
   <div>
-    <input type="text" name="category" placeholder="category" />
+    <input
+      type="text"
+      name="category"
+      placeholder="category"
+      value="{{category}}"
+    />
   </div>
   {{! here i would like to make buttons that display "graphic design", "web dev", "3d graphics" and after clicking one of them the appropriate category should be added to the database }}
   <div>
-    <input type="text" name="description" placeholder="description" />
+    <input
+      type="text"
+      name="description"
+      placeholder="description"
+      value="{{description}}"
+    />
   </div>
   {{! here i would like to have photos of my projects }}
   <div>
-    <input type="text" name="imageURL1" placeholder="image1" />
+    <input
+      type="text"
+      name="imageURL1"
+      placeholder="image1"
+      value="{{imageURL1}}"
+    />
   </div>
   <div>
-    <input type="text" name="repository" placeholder="repository" />
+    <input
+      type="text"
+      name="repository"
+      placeholder="repository"
+      value="{{repository}}"
+    />
   </div>
   <div>
-    <input type="text" name="link" placeholder="link" />
+    <input type="text" name="link" placeholder="link" value="{{link}}" />
   </div>
   <div>
-    <input type="text" name="date" placeholder="date" />
+    <input type="text" name="date" placeholder="date" value="{{date}}" />
   </div>
   <div>
     <input type="submit" value="create" />

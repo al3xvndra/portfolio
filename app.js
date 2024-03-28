@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const sqlite3 = require("sqlite3");
 const db = new sqlite3.Database("myDB.db");
 
+const minLength = 0;
+
 const app = express();
 
 app.engine(
@@ -33,6 +35,40 @@ db.run(
   date TEXT)`
 );
 
+function getErrorMessagesForProjects(
+  title,
+  category,
+  description,
+  imageURL1,
+  repository,
+  link,
+  date
+) {
+  const errorMessages = [];
+  if (title.length == minLength) {
+    errorMessages.push("The title field can't be empty.");
+  }
+  if (category.length == minLength) {
+    errorMessages.push("The category field can't be empty.");
+  }
+  if (description.length == minLength) {
+    errorMessages.push("The description field can't be empty.");
+  }
+  if (imageURL1.length == minLength) {
+    errorMessages.push("The image field can't be empty.");
+  }
+  if (repository.length == minLength) {
+    errorMessages.push("The repository field can't be empty.");
+  }
+  if (link.length == minLength) {
+    errorMessages.push("The link field can't be empty.");
+  }
+  if (date.length == minLength) {
+    errorMessages.push("The date field can't be empty.");
+  }
+  return errorMessages;
+}
+
 app.get("/", function (request, response) {
   response.render("home.hbs");
 });
@@ -44,13 +80,13 @@ app.get("/projects", function (request, response) {
     if (error) {
       console.log(error);
       const model = {
-        errorMessage: true,
+        errorDB: true,
       };
       response.render("projects.hbs", model);
     } else {
       const model = {
         projects,
-        errorMessage: false,
+        errorDB: false,
       };
 
       response.render("projects.hbs", model);
@@ -91,25 +127,62 @@ app.post("/projectCreate", function (request, response) {
   const link = request.body.link;
   const date = request.body.date;
 
-  const query =
-    "INSERT INTO projects (title, category, description, imageURL1, repository, link, date) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  const values = [
-    title,
-    category,
-    description,
-    imageURL1,
-    repository,
-    link,
-    date,
-  ];
+  const errorMessages = [];
+  if (title.length == minLength) {
+    errorMessages.push("The title field can't be empty.");
+  }
+  if (category.length == minLength) {
+    errorMessages.push("The category field can't be empty.");
+  }
+  if (description.length == minLength) {
+    errorMessages.push("The description field can't be empty.");
+  }
+  if (imageURL1.length == minLength) {
+    errorMessages.push("The image field can't be empty.");
+  }
+  if (repository.length == minLength) {
+    errorMessages.push("The repository field can't be empty.");
+  }
+  if (link.length == minLength) {
+    errorMessages.push("The link field can't be empty.");
+  }
+  if (date.length == minLength) {
+    errorMessages.push("The date field can't be empty.");
+  }
 
-  db.run(query, values, function (error) {
-    if (error) {
-      console.log(error);
-    } else {
-      response.redirect("/projects");
-    }
-  });
+  if (errorMessages.length == 0) {
+    const query =
+      "INSERT INTO projects (title, category, description, imageURL1, repository, link, date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+      title,
+      category,
+      description,
+      imageURL1,
+      repository,
+      link,
+      date,
+    ];
+
+    db.run(query, values, function (error) {
+      if (error) {
+        console.log(error);
+      } else {
+        response.redirect("/projects");
+      }
+    });
+  } else {
+    const model = {
+      errorMessages,
+      title,
+      category,
+      description,
+      imageURL1,
+      repository,
+      link,
+      date,
+    };
+    response.render("projectCreate.hbs", model);
+  }
 });
 
 app.get("/projectEdit/:id", function (request, response) {
