@@ -43,9 +43,14 @@ app.get("/projects", function (request, response) {
   db.all(query, function (error, projects) {
     if (error) {
       console.log(error);
+      const model = {
+        errorMessage: true,
+      };
+      response.render("projects.hbs", model);
     } else {
       const model = {
         projects,
+        errorMessage: false,
       };
 
       response.render("projects.hbs", model);
@@ -152,6 +157,23 @@ app.post("/projectEdit/:id", function (request, response) {
       console.log(error);
     } else {
       response.redirect("/projects");
+    }
+  });
+});
+
+app.get("/sure/:id", function (request, response) {
+  const id = request.params.id;
+  const query = "SELECT * FROM projects WHERE id = ?";
+  const values = [id];
+
+  db.get(query, values, function (error, project) {
+    if (error) {
+      console.log(error);
+    } else {
+      const model = {
+        project,
+      };
+      response.render("sure.hbs", model);
     }
   });
 });
