@@ -1,0 +1,64 @@
+<h1>project edit</h1>
+<form action="/projectEdit/{{project.id}}" method="POST">
+  <div>
+    <input
+      type="text"
+      name="title"
+      placeholder="title"
+      value="{{project.title}}"
+    />
+  </div>
+  <div>
+    <input
+      type="text"
+      name="category"
+      placeholder="category"
+      value="{{project.category}}"
+    />
+  </div>
+  {{! here i would like to make buttons that display "graphic design", "web dev", "3d graphics" and after clicking one of them the appropriate category should be added to the database }}
+  <div>
+    <input
+      type="text"
+      name="description"
+      placeholder="description"
+      value="{{project.description}}"
+    />
+  </div>
+  {{! here i would like to have photos of my projects }}
+  <div>
+    <input
+      type="text"
+      name="imageURL1"
+      placeholder="image1"
+      value="{{project.imageURL1}}"
+    />
+  </div>
+  <div>
+    <input
+      type="text"
+      name="repository"
+      placeholder="repository"
+      value="{{project.repository}}"
+    />
+  </div>
+  <div>
+    <input
+      type="text"
+      name="link"
+      placeholder="link"
+      value="{{project.link}}"
+    />
+  </div>
+  <div>
+    <input
+      type="text"
+      name="date"
+      placeholder="date"
+      value="{{project.date}}"
+    />
+  </div>
+  <div>
+    <input type="submit" value="projectEdit" />
+  </div>
+</form>

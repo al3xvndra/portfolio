@@ -3,7 +3,10 @@
 {{#if projects.length}}
   <ul>
     {{#each projects}}
-      <li><a href="/projects/{{id}}">{{title}} {{category}}</a></li>
+      <li><a href="/projects/{{id}}">{{title}}</a></li>
+      <form action="/projectEdit/{{id}}" method="GET">
+        <input type="submit" value="edit" />
+      </form>
       <form action="/projectDelete/{{id}}" method="POST">
         <input type="submit" value="delete" />
       </form>
