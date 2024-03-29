@@ -1,4 +1,10 @@
 <h1>project edit</h1>
+{{#if errorMessages.length}}
+  {{#each errorMessages}}
+    <p>{{this}}</p>
+  {{/each}}
+{{/if}}
+
 <form action="/projectEdit/{{project.id}}" method="POST">
   <div>
     <input
@@ -52,7 +58,7 @@
   </div>
   <div>
     <input
-      type="text"
+      type="date"
       name="date"
       placeholder="date"
       value="{{project.date}}"

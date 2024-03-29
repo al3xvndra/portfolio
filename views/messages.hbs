@@ -1,0 +1,18 @@
+<h1>messages</h1>
+
+{{#if errorDB}}
+  <p>Internal server error</p>
+{{else}}
+  {{#if contact.length}}
+    <ul>
+      {{#each contact}}
+        <h3>{{name}}</h3>
+        <h3>{{email}}</h3>
+        <h3>{{message}}</h3>
+      {{/each}}
+    </ul>
+
+  {{else}}
+    <p>No messages atm</p>
+  {{/if}}
+{{/if}}
