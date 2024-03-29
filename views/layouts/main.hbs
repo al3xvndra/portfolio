@@ -9,9 +9,17 @@
     <nav>
       <a href="/">home</a>
       <a href="/projects">projects</a>
-      <a href="/projectCreate">create</a>
+      {{#if isLoggedIn}}
+        <a href="/projectCreate">create</a>
+        <a href="/messages">messages</a>
+      {{/if}}
       <a href="/contact">contact</a>
       <a href="/about">about</a>
+      {{#if isLoggedIn}}
+        <form action="/logout" method="POST">
+          <input id="logout" type="submit" value="log out" />
+        </form>
+      {{/if}}
     </nav>
     <main>{{{body}}}</main>
     <footer>Copyright Alex 2024</footer>

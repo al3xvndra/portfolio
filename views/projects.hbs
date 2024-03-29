@@ -6,12 +6,14 @@
     <ul>
       {{#each projects}}
         <li><a href="/projects/{{id}}">{{title}}</a></li>
-        <form action="/projectEdit/{{id}}" method="GET">
-          <input type="submit" value="edit" />
-        </form>
-        <form action="/sure/{{id}}" method="GET">
-          <input type="submit" value="delete" />
-        </form>
+        {{#if ../isLoggedIn}}
+          <form action="/projectEdit/{{id}}" method="GET">
+            <input type="submit" value="edit" />
+          </form>
+          <form action="/sure/{{id}}" method="GET">
+            <input type="submit" value="delete" />
+          </form>
+        {{/if}}
       {{/each}}
     </ul>
 

@@ -2,11 +2,28 @@ const express = require("express");
 const expressHandlebars = require("express-handlebars");
 const bodyParser = require("body-parser");
 const sqlite3 = require("sqlite3");
+const expressSession = require("express-session");
+const multer = require("multer");
+const bcrypt = require("bcrypt");
 const db = new sqlite3.Database("myDB.db");
 
 const minLength = 0;
+const correctUsername = "abc";
+const correctPassword =
+  "$2b$13$ChLSn5DLOGqctfzWio8id.MRwe.D4u7ruqCUSoogSxK5f0nxwuuMW";
 
 const app = express();
+
+const storage = multer.diskStorage({
+  destination(request, file, cb) {
+    cb(null, "public/uploads");
+  },
+  filename(request, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage });
 
 app.engine(
   "hbs",
@@ -22,6 +39,27 @@ app.use(
     extended: false,
   })
 );
+
+app.use(
+  express.urlencoded({
+    extended: false,
+  })
+);
+
+app.use(
+  expressSession({
+    saveUninitialized: false,
+    resave: false,
+    secret: "uiewbvknd",
+  })
+);
+
+app.use(function (request, response, next) {
+  const isLoggedIn = request.session.isLoggedIn;
+  response.locals.isLoggedIn = isLoggedIn;
+
+  next();
+});
 
 db.run(
   `CREATE TABLE IF NOT EXISTS projects(
@@ -43,11 +81,12 @@ db.run(
   message TEXT)`
 );
 
+// error handling
+
 function getErrorMessagesForProjects(
   title,
   category,
   description,
-  imageURL1,
   repository,
   link,
   date
@@ -61,9 +100,6 @@ function getErrorMessagesForProjects(
   }
   if (description.length == minLength) {
     errorMessages.push("The description field can't be empty.");
-  }
-  if (imageURL1.length == minLength) {
-    errorMessages.push("The image field can't be empty.");
   }
   if (repository.length == minLength) {
     errorMessages.push("The repository field can't be empty.");
@@ -91,9 +127,25 @@ function getErrorMessagesForContact(name, email, message) {
   return errorMessages;
 }
 
+function getErrorMessagesForLogIn(enteredUsername, adminUsername, isCorrect) {
+  const errorMessages = [];
+
+  if (enteredUsername !== correctUsername) {
+    errorMessages.push("Wrong username or password");
+  }
+  if (isCorrect == false) {
+    errorMessages.push("Wrong username or password");
+  }
+  return errorMessages;
+}
+
+// home page
+
 app.get("/", function (request, response) {
   response.render("home.hbs");
 });
+
+// projects page
 
 app.get("/projects", function (request, response) {
   const query = "SELECT * FROM projects ORDER BY id DESC";
@@ -116,6 +168,8 @@ app.get("/projects", function (request, response) {
   });
 });
 
+// single project page
+
 app.get("/projects/:id", function (request, response) {
   const id = request.params.id;
   const query = "SELECT * FROM projects WHERE id = ?";
@@ -134,65 +188,82 @@ app.get("/projects/:id", function (request, response) {
   });
 });
 
-// manage projects
+// create project
 
 app.get("/projectCreate", function (request, response) {
-  response.render("projectCreate.hbs");
-});
-
-app.post("/projectCreate", function (request, response) {
-  const title = request.body.title;
-  const category = request.body.category;
-  const description = request.body.description;
-  const imageURL1 = request.body.imageURL1;
-  const repository = request.body.repository;
-  const link = request.body.link;
-  const date = request.body.date;
-
-  const errorMessages = getErrorMessagesForProjects(
-    title,
-    category,
-    description,
-    imageURL1,
-    repository,
-    link,
-    date
-  );
-
-  if (errorMessages.length == 0) {
-    const query =
-      "INSERT INTO projects (title, category, description, imageURL1, repository, link, date) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const values = [
-      title,
-      category,
-      description,
-      imageURL1,
-      repository,
-      link,
-      date,
-    ];
-
-    db.run(query, values, function (error) {
-      if (error) {
-        console.log(error);
-      } else {
-        response.redirect("/projects");
-      }
-    });
+  if (request.session.isLoggedIn) {
+    response.render("projectCreate.hbs");
   } else {
-    const model = {
-      errorMessages,
-      title,
-      category,
-      description,
-      imageURL1,
-      repository,
-      link,
-      date,
-    };
-    response.render("projectCreate.hbs", model);
+    response.redirect("/login");
   }
 });
+
+app.post(
+  "/projectCreate",
+  upload.single("imageURL1"),
+  function (request, response) {
+    const title = request.body.title;
+    const category = request.body.category;
+    const description = request.body.description;
+    const repository = request.body.repository;
+    const link = request.body.link;
+    const date = request.body.date;
+
+    const errorMessages = getErrorMessagesForProjects(
+      title,
+      category,
+      description,
+      repository,
+      link,
+      date
+    );
+
+    if (!request.file) {
+      errorMessages.push("Please upload a photo");
+    }
+
+    if (!request.session.isLoggedIn) {
+      errorMessages.push("You have to log in");
+    }
+
+    if (errorMessages.length == 0) {
+      const imageURL1 = request.file.filename;
+
+      const query =
+        "INSERT INTO projects (title, category, description, imageURL1, repository, link, date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      const values = [
+        title,
+        category,
+        description,
+        imageURL1,
+        repository,
+        link,
+        date,
+      ];
+
+      db.run(query, values, function (error) {
+        if (error) {
+          console.log(error);
+        } else {
+          response.redirect("/projects");
+        }
+      });
+    } else {
+      const model = {
+        errorMessages,
+        title,
+        category,
+        description,
+        repository,
+        link,
+        date,
+      };
+      response.render("projectCreate.hbs", model);
+    }
+  }
+);
+
+// edit project
 
 app.get("/projectEdit/:id", function (request, response) {
   const id = request.params.id;
@@ -211,51 +282,42 @@ app.get("/projectEdit/:id", function (request, response) {
   });
 });
 
-app.post("/projectEdit/:id", function (request, response) {
-  const id = request.params.id;
-  const title = request.body.title;
-  const category = request.body.category;
-  const description = request.body.description;
-  const imageURL1 = request.body.imageURL1;
-  const repository = request.body.repository;
-  const link = request.body.link;
-  const date = request.body.date;
+app.post(
+  "/projectEdit/:id",
+  upload.single("imageURL1"),
+  function (request, response) {
+    const id = request.params.id;
+    const title = request.body.title;
+    const category = request.body.category;
+    const description = request.body.description;
+    const repository = request.body.repository;
+    const link = request.body.link;
+    const date = request.body.date;
 
-  const errorMessages = getErrorMessagesForProjects(
-    title,
-    category,
-    description,
-    imageURL1,
-    repository,
-    link,
-    date
-  );
-
-  if (errorMessages.length == 0) {
-    const query = `UPDATE projects
-  SET title = ?, category = ?, description = ?, imageURL1 = ?, repository = ?, link = ?, date = ? WHERE id = ?;`;
-
-    const values = [
+    const errorMessages = getErrorMessagesForProjects(
       title,
       category,
       description,
-      imageURL1,
       repository,
       link,
-      date,
-      id,
-    ];
+      date
+    );
 
-    db.run(query, values, function (error) {
-      if (error) {
-        console.log(error);
-      } else {
-        response.redirect("/projects");
-      }
-    });
-  } else {
-    const model = {
-      project: {
+    if (!request.file) {
+      errorMessages.push("Please upload a photo");
+    }
+
+    if (!request.session.isLoggedIn) {
+      errorMessages.push("You have to log in");
+    }
+
+    if (errorMessages.length == 0) {
+      const imageURL1 = request.file.filename;
+
+      const query = `UPDATE projects
+  SET title = ?, category = ?, description = ?, imageURL1 = ?, repository = ?, link = ?, date = ? WHERE id = ?;`;
+
+      const values = [
         title,
         category,
         description,
@@ -263,13 +325,35 @@ app.post("/projectEdit/:id", function (request, response) {
         repository,
         link,
         date,
-      },
-      id,
-      errorMessages,
-    };
-    response.render("projectEdit.hbs", model);
+        id,
+      ];
+
+      db.run(query, values, function (error) {
+        if (error) {
+          console.log(error);
+        } else {
+          response.redirect("/projects");
+        }
+      });
+    } else {
+      const model = {
+        project: {
+          title,
+          category,
+          description,
+          repository,
+          link,
+          date,
+        },
+        id,
+        errorMessages,
+      };
+      response.render("projectEdit.hbs", model);
+    }
   }
-});
+);
+
+// delete project
 
 app.get("/sure/:id", function (request, response) {
   const id = request.params.id;
@@ -293,6 +377,10 @@ app.post("/projectDelete/:id", function (request, response) {
   const query = `DELETE FROM projects WHERE id = ?;`;
   const values = [id];
 
+  if (!request.session.isLoggedIn) {
+    errorMessages.push("You have to log in");
+  }
+
   db.run(query, values, function (error) {
     if (error) {
       console.log(error);
@@ -301,6 +389,8 @@ app.post("/projectDelete/:id", function (request, response) {
     }
   });
 });
+
+// contact page
 
 app.get("/contact", function (request, response) {
   response.render("contact.hbs");
@@ -336,36 +426,74 @@ app.post("/contact", function (request, response) {
 });
 
 app.get("/messages", function (request, response) {
-  const query = "SELECT * FROM contact ORDER BY id DESC";
+  if (request.session.isLoggedIn) {
+    const query = "SELECT * FROM contact ORDER BY id DESC";
 
-  db.all(query, function (error, contact) {
-    if (error) {
-      console.log(error);
-      const model = {
-        errorDB: true,
-      };
-      response.render("messages.hbs", model);
-    } else {
-      const model = {
-        contact,
-        errorDB: false,
-      };
+    db.all(query, function (error, contact) {
+      if (error) {
+        console.log(error);
+        const model = {
+          errorDB: true,
+        };
+        response.render("messages.hbs", model);
+      } else {
+        const model = {
+          contact,
+          errorDB: false,
+        };
 
-      response.render("messages.hbs", model);
-    }
-  });
+        response.render("messages.hbs", model);
+      }
+    });
+  } else {
+    response.redirect("/login");
+  }
 });
+
+// thank you page
 
 app.get("/thankyou", function (request, response) {
   response.render("thankyou.hbs");
 });
 
+// about page
+
 app.get("/about", function (request, response) {
   response.render("about.hbs");
 });
 
+// login page
+
 app.get("/login", function (request, response) {
   response.render("login.hbs");
+});
+
+app.post("/login", function (request, response) {
+  const enteredUsername = request.body.username;
+  const enteredPassword = request.body.password;
+  const isCorrect = bcrypt.compareSync(enteredPassword, correctPassword);
+
+  const errorMessages = getErrorMessagesForLogIn(
+    enteredUsername,
+    correctUsername,
+    isCorrect
+  );
+  if (errorMessages.length == 0) {
+    request.session.isLoggedIn = true;
+    response.redirect("/");
+  } else {
+    const model = {
+      errorMessages,
+    };
+    response.render("login.hbs", model);
+  }
+});
+
+// logout page
+
+app.post("/logout", function (request, response) {
+  request.session.isLoggedIn = false;
+  response.redirect("/");
 });
 
 app.listen(8080);
