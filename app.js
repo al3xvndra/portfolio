@@ -106,7 +106,7 @@ function getErrorMessagesForContact(name, email, message) {
   return errorMessages;
 }
 
-function getErrorMessagesForLogIn(enteredUsername, adminUsername, isCorrect) {
+function getErrorMessagesForLogIn(enteredUsername, correctUsername, isCorrect) {
   const errorMessages = [];
 
   if (enteredUsername !== correctUsername) {
@@ -439,6 +439,26 @@ app.get("/messages", function (request, response) {
     } else {
       response.redirect("/login");
     }
+  });
+});
+
+app.post("/deleteMessage/:id", function (request, response) {
+  const id = request.params.id;
+
+  if (!request.session.isLoggedIn) {
+    errorMessages.push("You have to log in");
+  }
+
+  db.deleteMessage(id, function (error) {
+    if (error) {
+      errorMessages.push("Internal server error");
+      const model = {
+        errorMessages,
+        id,
+      };
+      response.render("messages.hbs", model);
+    }
+    response.redirect("/messages");
   });
 });
 

@@ -9,6 +9,10 @@
         <h3>{{name}}</h3>
         <h3>{{email}}</h3>
         <h3>{{message}}</h3>
+
+        <form action="/deleteMessage/{{id}}" method="POST">
+          <input type="submit" value="delete" />
+        </form>
       {{/each}}
     </ul>
 

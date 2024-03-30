@@ -156,3 +156,14 @@ exports.createMessage = function (name, email, message, callback) {
     callback(error);
   });
 };
+
+// delete message
+
+exports.deleteMessage = function (id, callback) {
+  const values = [id];
+  const query = `DELETE FROM contact WHERE id = ?;`;
+
+  db.run(query, values, function (error) {
+    callback(error);
+  });
+};
