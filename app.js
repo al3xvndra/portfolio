@@ -1,11 +1,10 @@
 const express = require("express");
 const expressHandlebars = require("express-handlebars");
 const bodyParser = require("body-parser");
-const sqlite3 = require("sqlite3");
 const expressSession = require("express-session");
 const multer = require("multer");
 const bcrypt = require("bcrypt");
-const db = new sqlite3.Database("myDB.db");
+const db = require("./data.js");
 
 const minLength = 0;
 const correctUsername = "abc";
@@ -60,26 +59,6 @@ app.use(function (request, response, next) {
 
   next();
 });
-
-db.run(
-  `CREATE TABLE IF NOT EXISTS projects(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  title TEXT,
-  category TEXT,
-  description TEXT, 
-  imageURL1 TEXT,
-  repository TEXT,
-  link TEXT,
-  date TEXT)`
-);
-
-db.run(
-  `CREATE TABLE IF NOT EXISTS contact(
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT,
-  email TEXT,
-  message TEXT)`
-);
 
 // error handling
 
@@ -148,23 +127,19 @@ app.get("/", function (request, response) {
 // projects page
 
 app.get("/projects", function (request, response) {
-  const query = "SELECT * FROM projects ORDER BY id DESC";
+  db.getAllProjects(function (error, projects) {
+    const errorMessages = [];
 
-  db.all(query, function (error, projects) {
     if (error) {
-      console.log(error);
-      const model = {
-        errorDB: true,
-      };
-      response.render("projects.hbs", model);
-    } else {
-      const model = {
-        projects,
-        errorDB: false,
-      };
-
-      response.render("projects.hbs", model);
+      errorMessages.push("Internal server error");
     }
+
+    const model = {
+      errorMessages,
+      projects,
+    };
+
+    response.render("projects.hbs", model);
   });
 });
 
@@ -172,19 +147,19 @@ app.get("/projects", function (request, response) {
 
 app.get("/projects/:id", function (request, response) {
   const id = request.params.id;
-  const query = "SELECT * FROM projects WHERE id = ?";
-  const values = [id];
+  const errorMessages = [];
 
-  db.get(query, values, function (error, project) {
+  db.getOneProject(id, function (error, project) {
     if (error) {
-      console.log(error);
-    } else {
-      const model = {
-        project,
-      };
-
-      response.render("project.hbs", model);
+      errorMessages.push("Internal server error");
     }
+
+    const model = {
+      errorMessages,
+      project,
+    };
+
+    response.render("project.hbs", model);
   });
 });
 
@@ -229,9 +204,7 @@ app.post(
     if (errorMessages.length == 0) {
       const imageURL1 = request.file.filename;
 
-      const query =
-        "INSERT INTO projects (title, category, description, imageURL1, repository, link, date) VALUES (?, ?, ?, ?, ?, ?, ?)";
-      const values = [
+      db.createProject(
         title,
         category,
         description,
@@ -239,15 +212,23 @@ app.post(
         repository,
         link,
         date,
-      ];
-
-      db.run(query, values, function (error) {
-        if (error) {
-          console.log(error);
-        } else {
+        function (error) {
+          if (error) {
+            errorMessages.push("Internal server error");
+            const model = {
+              errorMessages,
+              title,
+              category,
+              description,
+              repository,
+              link,
+              date,
+            };
+            response.redirect("projectCreate.hbs", model);
+          }
           response.redirect("/projects");
         }
-      });
+      );
     } else {
       const model = {
         errorMessages,
@@ -267,17 +248,22 @@ app.post(
 
 app.get("/projectEdit/:id", function (request, response) {
   const id = request.params.id;
-  const queryProject = `SELECT * FROM projects WHERE id = ?`;
-  const values = [id];
 
-  db.get(queryProject, values, function (error, project) {
+  db.getEditProject(id, function (error, project) {
+    const errorMessages = [];
+
     if (error) {
-      console.log(error);
-    } else {
-      const model = {
-        project,
-      };
+      errorMessages.push("Internal server error");
+    }
+    const model = {
+      errorMessages,
+      project,
+      id,
+    };
+    if (request.session.isLoggedIn) {
       response.render("projectEdit.hbs", model);
+    } else {
+      response.redirect("/login");
     }
   });
 });
@@ -314,10 +300,7 @@ app.post(
     if (errorMessages.length == 0) {
       const imageURL1 = request.file.filename;
 
-      const query = `UPDATE projects
-  SET title = ?, category = ?, description = ?, imageURL1 = ?, repository = ?, link = ?, date = ? WHERE id = ?;`;
-
-      const values = [
+      db.editProject(
         title,
         category,
         description,
@@ -326,15 +309,23 @@ app.post(
         link,
         date,
         id,
-      ];
-
-      db.run(query, values, function (error) {
-        if (error) {
-          console.log(error);
-        } else {
+        function (error) {
+          if (error) {
+            errorMessages.push("Internal server error");
+            const model = {
+              errorMessages,
+              title,
+              category,
+              description,
+              repository,
+              link,
+              date,
+            };
+            response.render("editPost.hbs", model);
+          }
           response.redirect("/projects");
         }
-      });
+      );
     } else {
       const model = {
         project: {
@@ -357,36 +348,39 @@ app.post(
 
 app.get("/sure/:id", function (request, response) {
   const id = request.params.id;
-  const query = "SELECT * FROM projects WHERE id = ?";
-  const values = [id];
+  const errorMessages = [];
 
-  db.get(query, values, function (error, project) {
+  db.getDeleteProject(id, function (error, project) {
     if (error) {
-      console.log(error);
-    } else {
-      const model = {
-        project,
-      };
-      response.render("sure.hbs", model);
+      errorMessages.push("Internal server error");
     }
   });
+
+  const model = {
+    errorMessages,
+    project,
+  };
+
+  response.render("sure.hbs", model);
 });
 
 app.post("/projectDelete/:id", function (request, response) {
   const id = request.params.id;
-  const query = `DELETE FROM projects WHERE id = ?;`;
-  const values = [id];
 
   if (!request.session.isLoggedIn) {
     errorMessages.push("You have to log in");
   }
 
-  db.run(query, values, function (error) {
+  db.deleteProject(id, function (error) {
     if (error) {
-      console.log(error);
-    } else {
-      response.redirect("/projects");
+      errorMessages.push("Internal server error");
+      const model = {
+        errorMessages,
+        id,
+      };
+      response.render("sure.hbs", model);
     }
+    response.redirect("/projects");
   });
 });
 
@@ -404,15 +398,18 @@ app.post("/contact", function (request, response) {
   const errorMessages = getErrorMessagesForContact(name, email, message);
 
   if (errorMessages.length == 0) {
-    const query = "INSERT INTO contact (name, email, message) VALUES (?, ?, ?)";
-    const values = [name, email, message];
-
-    db.run(query, values, function (error) {
+    db.createMessage(name, email, message, function (error) {
       if (error) {
-        console.log(error);
-      } else {
-        response.redirect("/thankyou");
+        errorMessages.push("Internal server error");
+        const model = {
+          errorMessages,
+          name,
+          email,
+          message,
+        };
+        response.render("contact.hbs", model);
       }
+      response.redirect("/thankyou");
     });
   } else {
     const model = {
@@ -425,29 +422,24 @@ app.post("/contact", function (request, response) {
   }
 });
 
+// messages page
+
 app.get("/messages", function (request, response) {
-  if (request.session.isLoggedIn) {
-    const query = "SELECT * FROM contact ORDER BY id DESC";
-
-    db.all(query, function (error, contact) {
-      if (error) {
-        console.log(error);
-        const model = {
-          errorDB: true,
-        };
-        response.render("messages.hbs", model);
-      } else {
-        const model = {
-          contact,
-          errorDB: false,
-        };
-
-        response.render("messages.hbs", model);
-      }
-    });
-  } else {
-    response.redirect("/login");
-  }
+  db.getAllMessages(function (error, contact) {
+    const errorMessages = [];
+    if (error) {
+      errorMessages.push("Internal server error");
+    }
+    const model = {
+      errorMessages,
+      contact,
+    };
+    if (request.session.isLoggedIn) {
+      response.render("messages.hbs", model);
+    } else {
+      response.redirect("/login");
+    }
+  });
 });
 
 // thank you page
