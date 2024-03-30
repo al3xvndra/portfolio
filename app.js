@@ -74,7 +74,7 @@ function getErrorMessagesForProjects(
   if (title.length == minLength) {
     errorMessages.push("The title field can't be empty.");
   }
-  if (category.length == minLength) {
+  if (!category) {
     errorMessages.push("The category field can't be empty.");
   }
   if (description.length == minLength) {

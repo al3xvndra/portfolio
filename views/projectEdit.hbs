@@ -19,12 +19,15 @@
     />
   </div>
   <div>
-    <input
-      type="text"
-      name="category"
-      placeholder="category"
-      value="{{project.category}}"
-    />
+    <p>Graphic Design</p>
+    <input type="radio" name="category" id="category1" value="graphicDesign" />
+    <label for="category1"></label>
+    <p>Web Development</p>
+    <input type="radio" name="category" id="category2" value="webDevelopment" />
+    <label for="category2"></label>
+    <p>3D Graphics</p>
+    <input type="radio" name="category" id="category3" value="3dGraphics" />
+    <label for="category3"></label>
   </div>
   {{! here i would like to make buttons that display "graphic design", "web dev", "3d graphics" and after clicking one of them the appropriate category should be added to the database }}
   <div>
