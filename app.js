@@ -134,6 +134,23 @@ app.get("/", function (request, response) {
 // projects page
 
 app.get("/projects", function (request, response) {
+  db.getAllProjects(function (error, projects) {
+    const errorMessages = [];
+
+    if (error) {
+      errorMessages.push("Internal server error");
+    }
+
+    const model = {
+      errorMessages,
+      projects,
+    };
+
+    response.render("projects.hbs", model);
+  });
+});
+
+app.get("/projects/category", function (request, response) {
   const category = request.query.category;
 
   console.log(category);
@@ -156,20 +173,7 @@ app.get("/projects", function (request, response) {
       }
     });
   } else {
-    db.getAllProjects(function (error, projects) {
-      const errorMessages = [];
-
-      if (error) {
-        errorMessages.push("Internal server error");
-      }
-
-      const model = {
-        errorMessages,
-        projects,
-      };
-
-      response.render("projects.hbs", model);
-    });
+    response.redirect("/projects");
   }
 });
 
