@@ -18,7 +18,7 @@
   <ul>
     {{#each projects}}
       <li><a href="/projects/{{id}}">{{title}}</a></li>
-      {{#if isLoggedIn}}
+      {{#if ../isLoggedIn}}
         <form action="/projectEdit/{{id}}" method="GET">
           <input type="submit" value="edit" />
         </form>

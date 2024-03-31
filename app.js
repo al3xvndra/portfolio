@@ -389,14 +389,13 @@ app.get("/sure/:id", function (request, response) {
     if (error) {
       errorMessages.push("Internal server error");
     }
+    const model = {
+      errorMessages,
+      project,
+    };
+
+    response.render("sure.hbs", model);
   });
-
-  const model = {
-    errorMessages,
-    project,
-  };
-
-  response.render("sure.hbs", model);
 });
 
 app.post("/projectDelete/:id", function (request, response) {

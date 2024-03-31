@@ -124,9 +124,9 @@ exports.editProject = function (
 
 // get delete project
 
-exports.getDeleteProject = function (callback) {
-  const query = "SELECT * FROM projects WHERE id = ?";
+exports.getDeleteProject = function (id, callback) {
   const values = [id];
+  const query = "SELECT * FROM projects WHERE id = ?";
 
   db.get(query, values, function (error, project) {
     callback(error, project);
