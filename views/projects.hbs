@@ -1,19 +1,32 @@
 <h1>projects</h1>
-  {{#if projects.length}}
-    <ul>
-      {{#each projects}}
-        <li><a href="/projects/{{id}}">{{title}}</a></li>
-        {{#if ../isLoggedIn}}
-          <form action="/projectEdit/{{id}}" method="GET">
-            <input type="submit" value="edit" />
-          </form>
-          <form action="/sure/{{id}}" method="GET">
-            <input type="submit" value="delete" />
-          </form>
-        {{/if}}
-      {{/each}}
-    </ul>
+<form action="/projects/category" method="GET">
+  <label for="category1"></label>
+  <p>Graphic Design</p>
+  <input type="radio" name="category" id="category1" value="graphicDesign" />
+  <label for="category1"></label>
+  <p>Web Development</p>
+  <input type="radio" name="category" id="category2" value="webDevelopment" />
+  <label for="category2"></label>
+  <p>3D Graphics</p>
+  <input type="radio" name="category" id="category3" value="3dGraphics" />
+  <label for="category3"></label>
+  <input id="filterButton" type="submit" value="filter" />
+</form>
+{{#if projects.length}}
+  <ul>
+    {{#each projects}}
+      <li><a href="/projects/{{id}}">{{title}}</a></li>
+      {{#if isLoggedIn}}
+        <form action="/projectEdit/{{id}}" method="GET">
+          <input type="submit" value="edit" />
+        </form>
+        <form action="/sure/{{id}}" method="GET">
+          <input type="submit" value="delete" />
+        </form>
+      {{/if}}
+    {{/each}}
+  </ul>
 
-  {{else}}
-    <p>No projects atm</p>
-  {{/if}}
+{{else}}
+  <p>No projects atm</p>
+{{/if}}

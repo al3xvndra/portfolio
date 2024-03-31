@@ -31,6 +31,14 @@ exports.getAllProjects = function (callback) {
   });
 };
 
+exports.getProjectsCategory = function (category, callback) {
+  const values = [category];
+  const query = `SELECT * FROM projects WHERE category LIKE ? ORDER BY id DESC`;
+  db.all(query, values, function (error, projects) {
+    callback(error, projects);
+  });
+};
+
 // get one project
 
 exports.getOneProject = function (id, callback) {

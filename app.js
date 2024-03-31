@@ -77,6 +77,13 @@ function getErrorMessagesForProjects(
   if (!category) {
     errorMessages.push("The category field can't be empty.");
   }
+  if (
+    category != "graphicDesign" &&
+    category != "webDevelopment" &&
+    category != "3dGraphics"
+  ) {
+    errorMessages.push("This is not a valid category");
+  }
   if (description.length == minLength) {
     errorMessages.push("The description field can't be empty.");
   }
@@ -140,6 +147,29 @@ app.get("/projects", function (request, response) {
     };
 
     response.render("projects.hbs", model);
+  });
+});
+
+app.get("/projects/category", function (request, response) {
+  const category = request.query.category;
+
+  console.log(category);
+
+  db.getProjectsCategory(category, function (error, projects) {
+    const errorMessages = [];
+    if (error) {
+      errorMessages.push("Internal server error");
+      const model = {
+        errorMessages,
+        projects,
+      };
+      response.render("projects.hbs", model);
+    } else {
+      const model = {
+        projects,
+      };
+      response.render("projects.hbs", model);
+    }
   });
 });
 
@@ -320,6 +350,7 @@ app.post(
               repository,
               link,
               date,
+              id,
             };
             response.render("editPost.hbs", model);
           }
