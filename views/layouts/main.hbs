@@ -2,26 +2,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/layout.css" />
     <title>main</title>
   </head>
   <body>
     <nav>
-      <a href="/">home</a>
-      <a href="/projects">projects</a>
-      {{#if isLoggedIn}}
-        <a href="/projectCreate">create</a>
-        <a href="/messages">messages</a>
-      {{/if}}
-      <a href="/contact">contact</a>
-      <a href="/about">about</a>
-      {{#if isLoggedIn}}
-        <form action="/logout" method="POST">
-          <input id="logout" type="submit" value="log out" />
-        </form>
-      {{/if}}
+      <div class="left">
+        <a href="/">ALEKSANDRA TARKA</a>
+      </div>
+      <div class="right">
+        <a href="/">home</a>
+        <a href="/projects">projects</a>
+        {{#if isLoggedIn}}
+          <a href="/projectCreate">create</a>
+          <a href="/messages">messages</a>
+        {{/if}}
+        <a href="/contact">contact</a>
+        <a href="/about">about</a>
+        {{#if isLoggedIn}}
+          <form action="/logout" method="POST">
+            <input id="logout" type="submit" value="log out" />
+          </form>
+        {{/if}}
+      </div>
     </nav>
-    <main>{{{body}}}</main>
-    <footer>Copyright Alex 2024</footer>
+    <main>
+      <div class="parent">
+        <div class="side">
+          <p>SUNDAY, MARCH 31, 2024</p>
+        </div>
+        <div class="main">{{{body}}}</div>
+        <div class="side">
+          <p>JONKOPING, SWEDEN</p>
+        </div>
+      </div></main>
+    <footer>
+      <div class="left"><p>Copyright Alex 2024</p></div>
+      <div class="right">
+        <img
+          width="32"
+          height="32"
+          src="https://img.icons8.com/windows/32/fffbf4/behance.png"
+          alt="behance"
+        />
+        <img
+          width="32"
+          height="32"
+          src="https://img.icons8.com/windows/32/fffbf4/linkedin-2.png"
+          alt="linkedin-2"
+        />
+        <img
+          width="30"
+          height="30"
+          src="https://img.icons8.com/ios-glyphs/30/fffbf4/github.png"
+          alt="github"
+        />
+      </div>
+    </footer>
   </body>
 </html>
