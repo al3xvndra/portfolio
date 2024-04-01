@@ -20,7 +20,6 @@
     <input type="radio" name="category" id="category3" value="3dGraphics" />
     <label for="category3"></label>
   </div>
-  {{! here i would like to make buttons that display "graphic design", "web dev", "3d graphics" and after clicking one of them the appropriate category should be added to the database }}
   <div>
     <input
       type="text"
@@ -29,14 +28,8 @@
       value="{{description}}"
     />
   </div>
-  {{! here i would like to have photos of my projects }}
   <div>
-    <input
-      type="file"
-      name="imageURL1"
-      placeholder="image1"
-      value="{{imageURL1}}"
-    />
+    <input type="file" name="image" placeholder="image" value="{{image}}" />
   </div>
   <div>
     <input

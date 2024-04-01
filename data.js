@@ -6,11 +6,11 @@ db.run(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT,
     category TEXT,
-    description TEXT, 
-    imageURL1 TEXT,
+    description TEXT,
     repository TEXT,
     link TEXT,
-    date TEXT)`
+    date TEXT,
+    image TEXT)`
 );
 
 db.run(
@@ -19,6 +19,14 @@ db.run(
     name TEXT,
     email TEXT,
     message TEXT)`
+);
+
+db.run(
+  `CREATE TABLE IF NOT EXISTS photos(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    projectID INTEGER,
+    projectImage TEXT,
+    FOREIGN KEY(projectID) REFERENCES projects(id) ON DELETE CASCADE)`
 );
 
 // get projects
@@ -50,29 +58,43 @@ exports.getOneProject = function (id, callback) {
   });
 };
 
+// get photos
+
+exports.getAllPhotos = function (projectID, callback) {
+  const query = `SELECT * FROM photos WHERE projectID = ?`;
+  const values = [projectID];
+
+  db.all(query, values, function (error, photos) {
+    callback(error, photos);
+  });
+};
+
+// add photos
+
+exports.addPhoto = function (projectID, projectImage, callback) {
+  const query = "INSERT INTO photos (projectID, projectImage) VALUES (?, ?)";
+  const values = [projectID, projectImage];
+
+  db.run(query, values, function (error) {
+    callback(error);
+  });
+};
+
 // create project
 
 exports.createProject = function (
   title,
   category,
   description,
-  imageURL1,
+  image,
   repository,
   link,
   date,
   callback
 ) {
   const query =
-    "INSERT INTO projects (title, category, description, imageURL1, repository, link, date) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  const values = [
-    title,
-    category,
-    description,
-    imageURL1,
-    repository,
-    link,
-    date,
-  ];
+    "INSERT INTO projects (title, category, description, image, repository, link, date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  const values = [title, category, description, image, repository, link, date];
 
   db.run(query, values, function (error) {
     callback(error);
@@ -96,7 +118,7 @@ exports.editProject = function (
   title,
   category,
   description,
-  imageURL1,
+  image,
   repository,
   link,
   date,
@@ -104,13 +126,13 @@ exports.editProject = function (
   callback
 ) {
   const query = `UPDATE projects
-  SET title = ?, category = ?, description = ?, imageURL1 = ?, repository = ?, link = ?, date = ? WHERE id = ?;`;
+  SET title = ?, category = ?, description = ?, image = ?, repository = ?, link = ?, date = ? WHERE id = ?;`;
 
   const values = [
     title,
     category,
     description,
-    imageURL1,
+    image,
     repository,
     link,
     date,

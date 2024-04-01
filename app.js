@@ -187,15 +187,61 @@ app.get("/projects/:id", function (request, response) {
     if (error) {
       errorMessages.push("Internal server error");
     }
-
-    const model = {
-      errorMessages,
-      project,
-    };
-
-    response.render("project.hbs", model);
+    db.getAllPhotos(id, function (error, photos) {
+      if (error) {
+        errorMessages.push("Internal server error");
+      }
+      const model = {
+        errorMessages,
+        project,
+        photos,
+      };
+      response.render("project.hbs", model);
+    });
   });
 });
+
+app.post(
+  "/projects/:id",
+  upload.single("projectImage"),
+  function (request, response) {
+    const errorMessages = [];
+
+    const projectID = request.params.id;
+
+    if (!request.file) {
+      errorMessages.push("Please upload a photo");
+    }
+
+    if (!request.session.isLoggedIn) {
+      errorMessages.push("You have to log in");
+    }
+
+    if (errorMessages.length == 0) {
+      const projectImage = request.file.filename;
+
+      console.log("again" + projectImage);
+
+      db.addPhoto(projectID, projectImage, function (error) {
+        if (error) {
+          errorMessages.push("Internal server error");
+          const model = {
+            errorMessages,
+            projectID,
+          };
+          response.redirect("project.hbs", model);
+        }
+        response.redirect("/projects/" + projectID);
+      });
+    } else {
+      const model = {
+        errorMessages,
+        projectID,
+      };
+      response.render("project.hbs", model);
+    }
+  }
+);
 
 // create project
 
@@ -209,7 +255,7 @@ app.get("/projectCreate", function (request, response) {
 
 app.post(
   "/projectCreate",
-  upload.single("imageURL1"),
+  upload.single("image"),
   function (request, response) {
     const title = request.body.title;
     const category = request.body.category;
@@ -236,13 +282,13 @@ app.post(
     }
 
     if (errorMessages.length == 0) {
-      const imageURL1 = request.file.filename;
+      const image = request.file.filename;
 
       db.createProject(
         title,
         category,
         description,
-        imageURL1,
+        image,
         repository,
         link,
         date,
@@ -304,7 +350,7 @@ app.get("/projectEdit/:id", function (request, response) {
 
 app.post(
   "/projectEdit/:id",
-  upload.single("imageURL1"),
+  upload.single("image"),
   function (request, response) {
     const id = request.params.id;
     const title = request.body.title;
@@ -332,13 +378,13 @@ app.post(
     }
 
     if (errorMessages.length == 0) {
-      const imageURL1 = request.file.filename;
+      const image = request.file.filename;
 
       db.editProject(
         title,
         category,
         description,
-        imageURL1,
+        image,
         repository,
         link,
         date,
