@@ -1,0 +1,273 @@
+:root {
+  --primaryDark: #4679be;
+  --secondaryDark: #fffbf4;
+  --tertiaryDark: #e8fc87;
+}
+
+/* elements */
+
+h1 {
+  font-size: 84px;
+  font-family: "Playfair Display";
+  font-weight: 400;
+  color: var(--secondaryDark);
+  margin: 0;
+}
+
+h3 {
+  font-size: 54px;
+  font-family: "Playfair Display";
+  font-weight: 400;
+  color: var(--secondaryDark);
+  margin: 0;
+  padding: 0;
+}
+
+h5 {
+  font-size: 34px;
+  font-family: "Playfair Display";
+  font-weight: 400;
+  color: var(--secondaryDark);
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  font-size: 17px;
+  font-family: "Barlow";
+  color: var(--secondaryDark);
+}
+
+span {
+  font-style: italic;
+}
+
+/* classes */
+
+.niceButton {
+  background-color: var(--primaryDark);
+  border: 1px var(--secondaryDark) solid;
+  border-radius: 20px;
+  padding: 8px 28px;
+  margin-top: 2%;
+  font-size: 14px;
+  font-family: "Barlow";
+  color: var(--secondaryDark);
+  text-transform: uppercase;
+}
+
+.niceButton:hover {
+  border: 1px var(--primaryDark) solid;
+  background-color: var(--tertiaryDark);
+  color: var(--primaryDark);
+}
+
+.inputField {
+  background-color: var(--primaryDark);
+  border: 1px var(--secondaryDark) solid;
+  border-radius: 20px;
+  padding: 8px 20px;
+  width: 40vh;
+  margin-top: 1vh;
+  font-size: 14px;
+  font-family: "Barlow";
+  color: var(--secondaryDark);
+  text-transform: uppercase;
+}
+
+/* home page */
+
+#header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10% 10% 0 10%;
+}
+
+#process {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20% 10% 0 10%;
+}
+
+#steps {
+  display: flex;
+  margin: 10vh 10% 40vh 10%;
+}
+
+.step {
+  border-left: 1px var(--secondaryDark) solid;
+  padding: 0 4vh;
+}
+
+#about {
+  display: flex;
+  padding: 10% 10%;
+  justify-content: space-between;
+  border-top: 1px var(--secondaryDark) solid;
+  border-bottom: 1px var(--secondaryDark) solid;
+}
+
+#aboutImage {
+  width: 40%;
+}
+
+#aboutImage img {
+  width: 100%;
+}
+
+#aboutMe {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 10%;
+}
+
+#contact {
+  display: flex;
+  justify-content: space-between;
+}
+
+#contactForm {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10%;
+}
+
+#contactInfo {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px var(--secondaryDark) solid;
+  width: 50%;
+  padding: 10%;
+}
+
+@media (max-width: 1400px) {
+  h1 {
+    font-size: 74px;
+  }
+  h3 {
+    font-size: 54px;
+  }
+  h5 {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 1250px) {
+  h1 {
+    font-size: 64px;
+  }
+
+  #header {
+    margin: 13% 10% 40% 10%;
+  }
+}
+
+@media (max-width: 1100px) {
+  h1 {
+    font-size: 54px;
+  }
+  h3 {
+    font-size: 34px;
+  }
+  h5 {
+    font-size: 24px;
+  }
+
+  #aboutMe {
+    width: 100%;
+    padding: 0 0 0 10%;
+  }
+}
+
+@media (max-width: 900px) {
+  h1 {
+    font-size: 44px;
+  }
+  h3 {
+    font-size: 34px;
+  }
+  h5 {
+    font-size: 28px;
+  }
+  p {
+    font-size: 13px;
+  }
+
+  #header {
+    margin: 30% 10% 40% 10%;
+  }
+
+  .side {
+    padding: 30% 0;
+  }
+
+  #steps {
+    flex-direction: column;
+    margin: 10vh 10% 20vh 10%;
+  }
+
+  .step {
+    border-bottom: 1px var(--secondaryDark) solid;
+    border-left: none;
+    padding: 0 0 5% 0;
+  }
+
+  #aboutImage {
+    width: 60%;
+  }
+}
+
+@media (max-width: 700px) {
+  h1 {
+    font-size: 34px;
+  }
+  h3 {
+    font-size: 34px;
+  }
+  h5 {
+    font-size: 28px;
+  }
+
+  #about {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #aboutImage {
+    width: 50%;
+    padding-bottom: 5%;
+  }
+
+  #aboutImage img {
+    width: 100%;
+  }
+
+  #aboutMe {
+    width: 100%;
+    padding: 0;
+  }
+
+  #contact {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #contactForm {
+    width: 100%;
+    padding: 20% 10%;
+  }
+
+  #contactInfo {
+    display: flex;
+    border-left: none;
+    border-top: 1px var(--secondaryDark) solid;
+    width: 100%;
+    padding: 20% 10%;
+  }
+}

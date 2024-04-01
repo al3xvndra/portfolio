@@ -10,24 +10,39 @@ body {
 
 /* navigation bar */
 
+* {
+  box-sizing: border-box;
+}
+
 nav {
   position: fixed;
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   background-color: var(--primaryDark);
   border-bottom: 1px var(--secondaryDark) solid;
   width: 100%;
-  height: 10vh;
+  height: 10%;
+  padding: 0 5%;
 }
 
-.right {
+.left {
   display: flex;
-  justify-content: end;
+  justify-content: start;
   align-items: center;
-  width: 40%;
-  padding-right: 10vh;
+  width: 60%;
 }
 
-.right a {
+.left a {
+  font-size: 24px;
+  font-family: "Playfair Display";
+  padding: 0;
+  text-decoration: none;
+  color: var(--secondaryDark);
+}
+
+.menu a {
   font-size: 14px;
   font-family: "Barlow";
   text-transform: uppercase;
@@ -36,8 +51,124 @@ nav {
   padding: 1% 2% 1% 2%;
 }
 
-.right a:hover {
-  text-decoration: underline;
+.menu a {
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+.menu {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu > li {
+  margin: 0 1rem;
+  overflow: hidden;
+}
+
+.menu-button-container {
+  display: none;
+  height: 100%;
+  width: 30px;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+.menu-button,
+.menu-button::before,
+.menu-button::after {
+  display: block;
+  background-color: #fff;
+  position: absolute;
+  height: 4px;
+  width: 30px;
+  transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 2px;
+}
+
+.menu-button::before {
+  content: "";
+  margin-top: -8px;
+}
+
+.menu-button::after {
+  content: "";
+  margin-top: 8px;
+}
+
+#menu-toggle:checked + .menu-button-container .menu-button::before {
+  margin-top: 0px;
+  transform: rotate(405deg);
+}
+
+#menu-toggle:checked + .menu-button-container .menu-button {
+  background: rgba(255, 255, 255, 0);
+}
+
+#menu-toggle:checked + .menu-button-container .menu-button::after {
+  margin-top: 0px;
+  transform: rotate(-405deg);
+}
+
+@media (max-width: 700px) {
+  nav {
+    padding-right: 2vh;
+  }
+  .left {
+    padding-left: 2vh;
+  }
+  .left a {
+    font-size: 17px;
+  }
+  .menu-button-container {
+    display: flex;
+  }
+  .menu {
+    position: absolute;
+    top: 0;
+    margin-top: 10vh;
+    left: 0;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  #menu-toggle ~ .menu li {
+    height: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  #menu-toggle:checked ~ .menu li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--secondaryDark);
+    height: 22.5vh;
+    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .menu > li {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0.5em 0;
+    width: 100%;
+    color: white;
+    background-color: var(--primaryDark);
+  }
+  .menu > li:not(:last-child) {
+    border-bottom: 1px solid var(--secondaryDark);
+  }
 }
 
 #logout {
@@ -56,20 +187,11 @@ nav {
   text-decoration: underline;
 }
 
-.left {
+.right {
   display: flex;
-  justify-content: start;
+  justify-content: end;
   align-items: center;
-  width: 60%;
-  padding-left: 10vh;
-}
-
-.left a {
-  font-size: 24px;
-  font-family: "Playfair Display";
-  padding: 0;
-  text-decoration: none;
-  color: var(--secondaryDark);
+  width: 40%;
 }
 
 /* main part */
@@ -78,33 +200,31 @@ nav {
   display: flex;
   justify-content: space-between;
   height: max-content;
+  max-width: 1600px;
+  width: 100%;
   padding-top: 10vh;
 }
 
 .side {
-  width: 10vh;
-  padding: 30vh 0;
+  display: flex;
+  justify-content: center;
+  width: 5%;
+  padding: 15% 0;
 }
 
 .side p {
-  width: 10vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 14px;
   font-family: "Barlow";
   color: var(--secondaryDark);
   text-transform: uppercase;
   writing-mode: vertical-lr;
   text-orientation: sideways-right;
-  margin: auto;
 }
 
 .main {
-  width: 100%;
+  width: 90%;
   border-left: 1px var(--secondaryDark) solid;
   border-right: 1px var(--secondaryDark) solid;
-  padding: 10vh 15vh;
 }
 
 form {
@@ -113,7 +233,7 @@ form {
 
 footer {
   display: flex;
-  padding: 10vh 0;
+  padding: 10vh 5%;
   height: 5vh;
   font-size: 14px;
   font-family: "Barlow";
@@ -123,5 +243,5 @@ footer {
 }
 
 .right img {
-  padding-left: 3vh;
+  margin-left: 3vh;
 }
