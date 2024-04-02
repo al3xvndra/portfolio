@@ -12,7 +12,7 @@
   padding: 2%;
 }
 
-/* all projects */
+/* all projects page */
 
 #projectsContainer {
   display: grid;
@@ -37,4 +37,25 @@
   font-size: 34;
   text-decoration: none;
   color: var(--secondaryDark);
+}
+
+/* project page */
+
+.singleProject {
+  margin: 0 5%;
+}
+
+.singleProject img {
+  width: 100%;
+}
+
+.link {
+  font-family: "Barlow";
+  font-size: 16;
+  text-decoration: none;
+  color: var(--secondaryDark);
+}
+
+.link:hover {
+  text-decoration: underline;
 }

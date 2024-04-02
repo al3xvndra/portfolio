@@ -275,8 +275,6 @@ app.post(
     if (errorMessages.length == 0) {
       const projectImage = request.file.filename;
 
-      console.log("again" + projectImage);
-
       db.addPhoto(projectID, projectImage, function (error) {
         if (error) {
           errorMessages.push("Internal server error");
@@ -297,6 +295,29 @@ app.post(
     }
   }
 );
+
+// delete projects photo
+
+app.post("/deletePhoto/:id/:projectID", function (request, response) {
+  const id = request.params.id;
+  const projectID = request.params.projectID;
+
+  if (!request.session.isLoggedIn) {
+    errorMessages.push("You have to log in");
+  }
+  db.deletePhoto(id, function (error) {
+    if (error) {
+      errorMessages.push("Internal server error");
+      const model = {
+        errorMessages,
+        id,
+        projectID,
+      };
+      response.render("projects.hbs", model);
+    }
+    response.redirect("/projects/" + projectID);
+  });
+});
 
 // create project
 

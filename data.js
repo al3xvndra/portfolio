@@ -106,6 +106,17 @@ exports.addPhoto = function (projectID, projectImage, callback) {
   });
 };
 
+// delete photos
+
+exports.deletePhoto = function (id, callback) {
+  const values = [id];
+  const query = `DELETE FROM photos WHERE id = ?;`;
+
+  db.run(query, values, function (error) {
+    callback(error);
+  });
+};
+
 // create project
 
 exports.createProject = function (

@@ -1,46 +1,55 @@
 {{#if errorMessages.length}}
   {{#each errorMessages}}
-    <p>{{this}}</p>
+    <p class="err">{{this}}</p>
   {{/each}}
 {{/if}}
 
 {{#if project}}
   <h1 class="pageName">{{project.title}}</h1>
-  <p>Project category: {{project.category}}</p>
-  <p>Project description: {{project.description}}</p>
-  {{#if isLoggedIn}}
-    <form
-      class="form"
-      action="/projects/{{project.id}}"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-      <div>
-        <input
-          class="inputField"
-          type="file"
-          name="projectImage"
-          placeholder="image"
-          value="{{projectImage}}"
+  <div class="singleProject">
+    <button
+      style="background-color: {{project.color}};"
+      class="catButton"
+    >{{project.category}}</button>
+    <p>{{project.description}}</p>
+    {{#if isLoggedIn}}
+      <form
+        action="/projects/{{project.id}}"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div>
+          <input
+            class="inputField"
+            type="file"
+            name="projectImage"
+            placeholder="image"
+            value="{{projectImage}}"
+          />
+        </div>
+        <input class="niceButton" type="submit" value="add" />
+      </form>
+    {{/if}}
+    {{#if photos.length}}
+      {{#each photos}}
+        <img
+          class="photoStyle"
+          src="/uploads/{{projectImage}}"
+          alt="An image showing part of my project"
         />
-      </div>
-      <input class="niceButton" type="submit" value="add" />
-    </form>
-  {{/if}}
-  {{#if photos.length}}
-    {{#each photos}}
-      <img
-        class="photoStyle"
-        src="/uploads/{{projectImage}}"
-        alt="An image showing part of my project"
-      />
-    {{/each}}
-  {{else}}
-    <p>No photos atm</p>
-  {{/if}}
-  <p>Project repository: {{project.repository}}</p>
-  <p>Project link: {{project.link}}</p>
-  <p>Project date: {{project.date}}</p>
+        {{#if ../isLoggedIn}}
+          <form action="/deletePhoto/{{id}}/{{projectID}}" method="POST">
+            <input class="deleteButton" type="submit" value="delete" />
+          </form>
+        {{/if}}
+      {{/each}}
+    {{else}}
+      <p>No photos atm</p>
+    {{/if}}
+    <p>{{project.repository}}</p>
+    <a class="link" href="{{project.link}}" target="_blank">{{project.link}}</a>
+    <p>{{project.date}}</p>
+  </div>
 {{else}}
   <p>That project does not exist</p>
 {{/if}}
