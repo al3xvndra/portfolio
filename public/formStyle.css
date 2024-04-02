@@ -78,9 +78,6 @@ form {
 }
 
 .categoryButton {
-  display: block;
-  justify-content: center;
-  align-items: center;
   background-color: var(--primaryDark);
   border: none;
   font-size: 14px;
@@ -215,4 +212,15 @@ input[type="radio"]:checked:before {
   width: 40%;
   margin-left: 10%;
   padding: 1%;
+}
+
+@media (max-width: 900px) {
+  .catButton {
+    font-size: 12px;
+    padding: 8px 18px;
+  }
+
+  .categoryButton {
+    font-size: 12px;
+  }
 }
