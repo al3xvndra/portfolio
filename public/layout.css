@@ -52,9 +52,7 @@ nav {
 }
 
 .menu a {
-  a:hover {
-    text-decoration: underline;
-  }
+  text-decoration: underline;
 }
 
 .menu {
@@ -227,8 +225,8 @@ nav {
   border-right: 1px var(--secondaryDark) solid;
 }
 
-form {
-  margin: 0;
+.pageName {
+  margin: 2% 0 0 10%;
 }
 
 footer {

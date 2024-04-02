@@ -13,33 +13,12 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/layout.css" />
-    <link rel="stylesheet" href="/pageStyle.css" />
+    <link rel="stylesheet" href="/homeStyle.css" />
+    <link rel="stylesheet" href="/displayStyle.css" />
+    <link rel="stylesheet" href="/formStyle.css" />
     <title>main</title>
   </head>
   <body>
-    {{!-- <nav>
-      <div class="left">
-        <a href="/">ALEKSANDRA TARKA</a>
-      </div>
-      <div class="right">
-        <a href="/">home</a>
-        <a href="/projects">projects</a>
-        {{#if isLoggedIn}}
-          <a href="/projectCreate">create</a>
-          <a href="/messages">messages</a>
-        {{/if}}
-        <a href="/contact">contact</a>
-        <a href="/about">about</a>
-        {{#if isLoggedIn}}
-          <form action="/logout" method="POST">
-            <input id="logout" type="submit" value="log out" />
-          </form>
-        {{/if}}
-        <span class="material-symbols-outlined">
-          menu
-        </span>
-      </div>
-    </nav> --}}
     <nav>
       <div class="left">
         <a href="/">ALEKSANDRA TARKA</a>
@@ -57,11 +36,6 @@
         {{/if}}
         <li><a href="/contact">contact</a></li>
         <li><a href="/about">about</a></li>
-        {{#if isLoggedIn}}
-          <form action="/logout" method="POST">
-            <input id="logout" type="submit" value="log out" />
-          </form>
-        {{/if}}
       </ul>
     </nav>
     <main>
@@ -76,6 +50,11 @@
       </div></main>
     <footer>
       <div class="left"><p>Copyright Alex 2024</p></div>
+      <div>{{#if isLoggedIn}}
+          <form action="/logout" method="POST">
+            <input id="logout" type="submit" value="log out" />
+          </form>
+        {{/if}}</div>
       <div class="right">
         <img
           width="32"

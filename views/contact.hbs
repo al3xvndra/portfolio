@@ -1,16 +1,44 @@
-<h1>contact</h1>
-
-<form action="" method="POST">
-  <div>
-    <input type="text" name="name" placeholder="Your name" />
+<div id="contact">
+  <div id="contactForm">
+    <div>
+      <h5>Let's stay in <span>touch</span></h5>
+      <form action="/contact" method="POST">
+        <div>
+          <input
+            class="inputField"
+            type="text"
+            name="name"
+            placeholder="Your name"
+          />
+        </div>
+        <div>
+          <input
+            class="inputField"
+            type="text"
+            name="email"
+            placeholder="Your email"
+          />
+        </div>
+        <div>
+          <input
+            class="inputField"
+            type="text"
+            name="message"
+            placeholder="Message"
+          />
+        </div>
+        <div>
+          <input class="niceButton" type="submit" value="send" />
+        </div>
+      </form>
+    </div>
   </div>
-  <div>
-    <input type="text" name="email" placeholder="Your email" />
+  <div id="contactInfo">
+    <h5>For collaborations</h5>
+    <p>Lorem ipsum dolor sit amet consectetur. Placerat interdum ullamcorper
+      amet fames pellentesque nullam in. Urna congue sit urna blandit diam.
+      Aliquet ultricetitor ut placerat magna. Lorem ipsum dolor sit amet
+      consectetur. Placerat interdum ullamcorper amet fames pellentesque nullam
+      in. Urna congue sit urna blandit diam.</p>
   </div>
-  <div>
-    <input type="text" name="message" placeholder="Message" />
-  </div>
-  <div>
-    <input type="submit" value="send" />
-  </div>
-</form>
+</div>

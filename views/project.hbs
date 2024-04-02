@@ -1,4 +1,3 @@
-<h1>project</h1>
 {{#if errorMessages.length}}
   {{#each errorMessages}}
     <p>{{this}}</p>
@@ -6,26 +5,28 @@
 {{/if}}
 
 {{#if project}}
+  <h1 class="pageName">{{project.title}}</h1>
+  <p>Project category: {{project.category}}</p>
+  <p>Project description: {{project.description}}</p>
   {{#if isLoggedIn}}
     <form
+      class="form"
       action="/projects/{{project.id}}"
       method="POST"
       enctype="multipart/form-data"
     >
       <div>
         <input
+          class="inputField"
           type="file"
           name="projectImage"
           placeholder="image"
           value="{{projectImage}}"
         />
       </div>
-      <input type="submit" value="add" />
+      <input class="niceButton" type="submit" value="add" />
     </form>
   {{/if}}
-  <p>Project name: {{project.title}}</p>
-  <p>Project category: {{project.category}}</p>
-  <p>Project description: {{project.description}}</p>
   <p>Project image: {{project.image}}</p>
   {{#if photos.length}}
     {{#each photos}}

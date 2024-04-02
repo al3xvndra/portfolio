@@ -1,21 +1,19 @@
-<h1>messages</h1>
+<h1 class="pageName">messages</h1>
 
 {{#if errorDB}}
   <p>Internal server error</p>
 {{else}}
   {{#if contact.length}}
-    <ul>
-      {{#each contact}}
+    {{#each contact}}
+      <div class="message">
         <h3>{{name}}</h3>
-        <h3>{{email}}</h3>
-        <h3>{{message}}</h3>
-
+        <p>{{email}}</p>
+        <p>{{message}}</p>
         <form action="/deleteMessage/{{id}}" method="POST">
-          <input type="submit" value="delete" />
+          <input class="deleteButton" type="submit" value="delete" />
         </form>
-      {{/each}}
-    </ul>
-
+      </div>
+    {{/each}}
   {{else}}
     <p>No messages atm</p>
   {{/if}}

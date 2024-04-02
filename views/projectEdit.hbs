@@ -1,4 +1,4 @@
-<h1>project edit</h1>
+<h1 class="pageName">project edit</h1>
 {{#if errorMessages.length}}
   {{#each errorMessages}}
     <p>{{this}}</p>
@@ -6,41 +6,67 @@
 {{/if}}
 
 <form
+  class="form"
   action="/projectEdit/{{project.id}}"
   method="POST"
   enctype="multipart/form-data"
 >
   <div>
     <input
+      class="inputField"
       type="text"
       name="title"
       placeholder="title"
       value="{{project.title}}"
     />
   </div>
-  <div>
-    <p>Graphic Design</p>
-    <input type="radio" name="category" id="category1" value="graphicDesign" />
-    <label for="category1"></label>
-    <p>Web Development</p>
-    <input type="radio" name="category" id="category2" value="webDevelopment" />
-    <label for="category2"></label>
-    <p>3D Graphics</p>
-    <input type="radio" name="category" id="category3" value="3dGraphics" />
-    <label for="category3"></label>
+  <div class="categoryChoice">
+    <div class="choice">
+      <p>Graphic Design</p>
+      <input
+        class="radio"
+        type="radio"
+        name="category"
+        id="category1"
+        value="graphicDesign"
+      />
+      <label for="category1"></label>
+    </div>
+    <div class="choice">
+      <p>Web Development</p>
+      <input
+        class="radio"
+        type="radio"
+        name="category"
+        id="category2"
+        value="webDevelopment"
+      />
+      <label for="category2"></label>
+    </div>
+    <div class="choice">
+      <p>3D Graphics</p>
+      <input
+        class="radio"
+        type="radio"
+        name="category"
+        id="category3"
+        value="3dGraphics"
+      />
+      <label for="category3"></label>
+    </div>
   </div>
-  {{! here i would like to make buttons that display "graphic design", "web dev", "3d graphics" and after clicking one of them the appropriate category should be added to the database }}
   <div>
     <input
+      class="inputField"
       type="text"
       name="description"
       placeholder="description"
       value="{{project.description}}"
     />
   </div>
-  {{! here i would like to have photos of my projects }}
   <div>
     <input
+      class="inputField"
       type="file"
       name="image"
       placeholder="image"
@@ -49,6 +75,7 @@
   </div>
   <div>
     <input
+      class="inputField"
       type="text"
       name="repository"
       placeholder="repository"
@@ -57,6 +84,7 @@
   </div>
   <div>
     <input
+      class="inputField"
       type="text"
       name="link"
       placeholder="link"
@@ -65,6 +93,7 @@
   </div>
   <div>
     <input
+      class="inputField"
       type="date"
       name="date"
       placeholder="date"
@@ -72,6 +101,6 @@
     />
   </div>
   <div>
-    <input type="submit" value="save" />
+    <input class="niceButton" type="submit" value="save" />
   </div>
 </form>

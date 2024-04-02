@@ -1,16 +1,26 @@
-<h1>login</h1>
+<h1 class="pageName">login</h1>
 {{#if errorMessages.length}}
   {{#each errorMessages}}
     <p>{{this}}</p>
   {{/each}}
 {{/if}}
 
-<form action="/login" method="POST">
+<form class="form" action="/login" method="POST">
   <div>
-    <input type="text" name="username" placeholder="username" />
+    <input
+      class="inputField"
+      type="text"
+      name="username"
+      placeholder="username"
+    />
   </div>
   <div>
-    <input type="password" name="password" placeholder="password" />
+    <input
+      class="inputField"
+      type="password"
+      name="password"
+      placeholder="password"
+    />
   </div>
   <div>
     <input type="submit" value="log in" />

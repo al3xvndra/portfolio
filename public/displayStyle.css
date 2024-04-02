@@ -1,0 +1,13 @@
+/* messages */
+
+.message {
+  border: 1px var(--secondaryDark) solid;
+  width: 50%;
+  margin: 5% 0 0 10%;
+  padding: 3%;
+}
+
+.message p {
+  border: 1px var(--secondaryDark) solid;
+  padding: 2%;
+}

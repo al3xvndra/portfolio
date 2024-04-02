@@ -42,39 +42,6 @@ span {
   font-style: italic;
 }
 
-/* classes */
-
-.niceButton {
-  background-color: var(--primaryDark);
-  border: 1px var(--secondaryDark) solid;
-  border-radius: 20px;
-  padding: 8px 28px;
-  margin-top: 2%;
-  font-size: 14px;
-  font-family: "Barlow";
-  color: var(--secondaryDark);
-  text-transform: uppercase;
-}
-
-.niceButton:hover {
-  border: 1px var(--primaryDark) solid;
-  background-color: var(--tertiaryDark);
-  color: var(--primaryDark);
-}
-
-.inputField {
-  background-color: var(--primaryDark);
-  border: 1px var(--secondaryDark) solid;
-  border-radius: 20px;
-  padding: 8px 20px;
-  width: 40vh;
-  margin-top: 1vh;
-  font-size: 14px;
-  font-family: "Barlow";
-  color: var(--secondaryDark);
-  text-transform: uppercase;
-}
-
 /* home page */
 
 #header {
@@ -135,7 +102,7 @@ span {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10%;
+  padding: 14% 10%;
 }
 
 #contactInfo {
@@ -143,7 +110,7 @@ span {
   flex-direction: column;
   border-left: 1px var(--secondaryDark) solid;
   width: 50%;
-  padding: 10%;
+  padding: 14% 10%;
 }
 
 @media (max-width: 1400px) {

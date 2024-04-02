@@ -1,4 +1,4 @@
-<h1>projects</h1>
+<h1 class="pageName">projects</h1>
 <form action="/projects/category" method="GET">
   <p>All</p>
   <input type="radio" name="category" id="category0" value="" />
@@ -12,7 +12,7 @@
   <p>3D Graphics</p>
   <input type="radio" name="category" id="category3" value="3dGraphics" />
   <label for="category3"></label>
-  <input id="filterButton" type="submit" value="filter" />
+  <input class="niceButton" type="submit" value="filter" />
 </form>
 {{#if projects.length}}
   <ul>
@@ -20,10 +20,10 @@
       <li><a href="/projects/{{id}}">{{title}}</a></li>
       {{#if ../isLoggedIn}}
         <form action="/projectEdit/{{id}}" method="GET">
-          <input type="submit" value="edit" />
+          <input class="editButton" type="submit" value="edit" />
         </form>
         <form action="/sure/{{id}}" method="GET">
-          <input type="submit" value="delete" />
+          <input class="deleteButton" type="submit" value="delete" />
         </form>
       {{/if}}
     {{/each}}

@@ -1,0 +1,108 @@
+form {
+  margin: 0;
+}
+
+.form {
+  margin-left: 10%;
+}
+
+.niceButton {
+  background-color: var(--primaryDark);
+  border: 1px var(--secondaryDark) solid;
+  border-radius: 20px;
+  padding: 8px 28px;
+  margin-top: 2vh;
+  font-size: 14px;
+  font-family: "Barlow";
+  color: var(--secondaryDark);
+  text-transform: uppercase;
+}
+
+.editButton {
+  background-color: #60e7a6;
+  border: 1px var(--secondaryDark) solid;
+  border-radius: 20px;
+  padding: 8px 28px;
+  margin-top: 2vh;
+  font-size: 14px;
+  font-family: "Barlow";
+  color: var(--secondaryDark);
+  text-transform: uppercase;
+}
+
+.deleteButton {
+  background-color: #be46b5;
+  border: 1px var(--secondaryDark) solid;
+  border-radius: 20px;
+  padding: 8px 28px;
+  margin-top: 2vh;
+  font-size: 14px;
+  font-family: "Barlow";
+  color: var(--secondaryDark);
+  text-transform: uppercase;
+}
+
+.niceButton:hover {
+  border: 1px var(--primaryDark) solid;
+  background-color: var(--tertiaryDark);
+  color: var(--primaryDark);
+}
+
+.inputField {
+  background-color: var(--primaryDark);
+  border: 1px var(--secondaryDark) solid;
+  border-radius: 20px;
+  padding: 8px 20px;
+  width: 40vh;
+  margin-top: 2vh;
+  font-size: 14px;
+  font-family: "Barlow";
+  color: var(--secondaryDark);
+}
+
+.categoryChoice {
+  display: flex;
+}
+
+.choice {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 2% 0 0;
+}
+
+.choice p {
+  margin: 10% 0 3% 0;
+}
+
+input[type="radio"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  appearance: none;
+  width: 120px;
+  height: 35px;
+  border: 1px var(--secondaryDark) solid;
+  border-radius: 20px;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+input[type="radio"]:before {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  content: "";
+  width: 90%;
+  height: 80%;
+  border-radius: 20px;
+  margin: auto;
+}
+
+input[type="radio"]:checked:before {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--secondaryDark);
+}
