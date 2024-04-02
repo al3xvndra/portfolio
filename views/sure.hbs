@@ -2,8 +2,8 @@
 <p>You are going to delete post: {{project.name}}</p>
 
 <form action="/projectDelete/{{project.id}}" method="POST">
-  <input type="submit" value="delete" />
+  <input class="deleteButton" type="submit" value="delete" />
 </form>
 <form action="/projects" method="GET">
-  <input type="submit" value="cancel" />
+  <input class="niceButton" type="submit" value="cancel" />
 </form>

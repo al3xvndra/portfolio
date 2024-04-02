@@ -65,9 +65,8 @@ app.use(function (request, response, next) {
 function getErrorMessagesForProjects(
   title,
   category,
+  color,
   description,
-  repository,
-  link,
   date
 ) {
   const errorMessages = [];
@@ -78,20 +77,20 @@ function getErrorMessagesForProjects(
     errorMessages.push("The category field can't be empty.");
   }
   if (
-    category != "graphicDesign" &&
-    category != "webDevelopment" &&
-    category != "3dGraphics"
+    category != "Graphic Design" &&
+    category != "Web Development" &&
+    category != "3D Graphics"
   ) {
     errorMessages.push("This is not a valid category");
   }
+  if (!color) {
+    errorMessages.push("The color field can't be empty.");
+  }
+  if (color != "#60e7a6" && color != "#be46b5" && color != "#bbb5fd") {
+    errorMessages.push("This is not a valid color");
+  }
   if (description.length == minLength) {
     errorMessages.push("The description field can't be empty.");
-  }
-  if (repository.length == minLength) {
-    errorMessages.push("The repository field can't be empty.");
-  }
-  if (link.length == minLength) {
-    errorMessages.push("The link field can't be empty.");
   }
   if (date.length == minLength) {
     errorMessages.push("The date field can't be empty.");
@@ -150,31 +149,87 @@ app.get("/projects", function (request, response) {
   });
 });
 
-app.get("/projects/category", function (request, response) {
-  const category = request.query.category;
+// app.get("/projects/category", function (request, response) {
+//   const category = request.query.category;
 
-  console.log(category);
+//   console.log(category);
 
-  if (category) {
-    db.getProjectsCategory(category, function (error, projects) {
-      const errorMessages = [];
-      if (error) {
-        errorMessages.push("Internal server error");
-        const model = {
-          errorMessages,
-          projects,
-        };
-        response.render("projects.hbs", model);
-      } else {
-        const model = {
-          projects,
-        };
-        response.render("projects.hbs", model);
-      }
-    });
-  } else {
-    response.redirect("/projects");
-  }
+//   if (category) {
+//     db.getProjectsCategory(category, function (error, projects) {
+//       const errorMessages = [];
+//       if (error) {
+//         errorMessages.push("Internal server error");
+//         const model = {
+//           errorMessages,
+//           projects,
+//         };
+//         response.render("projects.hbs", model);
+//       } else {
+//         const model = {
+//           projects,
+//         };
+//         response.render("projects.hbs", model);
+//       }
+//     });
+//   } else {
+//     response.redirect("/projects");
+//   }
+// });
+
+// category Graphic Design
+app.get("/projects/graphicDesign", function (request, response) {
+  db.getAllProjectsGD(function (error, projects) {
+    const errorMessages = [];
+
+    if (error) {
+      errorMessages.push("Internal server error");
+    }
+
+    const model = {
+      errorMessages,
+      projects,
+    };
+
+    response.render("projects.hbs", model);
+  });
+});
+
+// category Web Development
+
+app.get("/projects/webDevelopment", function (request, response) {
+  db.getAllProjectsWD(function (error, projects) {
+    const errorMessages = [];
+
+    if (error) {
+      errorMessages.push("Internal server error");
+    }
+
+    const model = {
+      errorMessages,
+      projects,
+    };
+
+    response.render("projects.hbs", model);
+  });
+});
+
+// category 3D
+
+app.get("/projects/3dGraphics", function (request, response) {
+  db.getAllProjects3D(function (error, projects) {
+    const errorMessages = [];
+
+    if (error) {
+      errorMessages.push("Internal server error");
+    }
+
+    const model = {
+      errorMessages,
+      projects,
+    };
+
+    response.render("projects.hbs", model);
+  });
 });
 
 // single project page
@@ -253,76 +308,68 @@ app.get("/projectCreate", function (request, response) {
   }
 });
 
-app.post(
-  "/projectCreate",
-  upload.single("image"),
-  function (request, response) {
-    const title = request.body.title;
-    const category = request.body.category;
-    const description = request.body.description;
-    const repository = request.body.repository;
-    const link = request.body.link;
-    const date = request.body.date;
+app.post("/projectCreate", function (request, response) {
+  const title = request.body.title;
+  const category = request.body.category;
+  const color = request.body.color;
+  const description = request.body.description;
+  const repository = request.body.repository;
+  const link = request.body.link;
+  const date = request.body.date;
 
-    const errorMessages = getErrorMessagesForProjects(
+  const errorMessages = getErrorMessagesForProjects(
+    title,
+    category,
+    color,
+    description,
+    date
+  );
+
+  if (!request.session.isLoggedIn) {
+    errorMessages.push("You have to log in");
+  }
+
+  if (errorMessages.length == 0) {
+    db.createProject(
       title,
       category,
+      color,
       description,
       repository,
       link,
-      date
-    );
-
-    if (!request.file) {
-      errorMessages.push("Please upload a photo");
-    }
-
-    if (!request.session.isLoggedIn) {
-      errorMessages.push("You have to log in");
-    }
-
-    if (errorMessages.length == 0) {
-      const image = request.file.filename;
-
-      db.createProject(
-        title,
-        category,
-        description,
-        image,
-        repository,
-        link,
-        date,
-        function (error) {
-          if (error) {
-            errorMessages.push("Internal server error");
-            const model = {
-              errorMessages,
-              title,
-              category,
-              description,
-              repository,
-              link,
-              date,
-            };
-            response.redirect("projectCreate.hbs", model);
-          }
-          response.redirect("/projects");
+      date,
+      function (error) {
+        if (error) {
+          errorMessages.push("Internal server error");
+          const model = {
+            errorMessages,
+            title,
+            category,
+            color,
+            description,
+            repository,
+            link,
+            date,
+          };
+          response.redirect("projectCreate.hbs", model);
         }
-      );
-    } else {
-      const model = {
-        errorMessages,
-        title,
-        category,
-        description,
-        repository,
-        link,
-        date,
-      };
-      response.render("projectCreate.hbs", model);
-    }
+        response.redirect("/projects");
+      }
+    );
+  } else {
+    const model = {
+      errorMessages,
+      title,
+      category,
+      color,
+      description,
+      repository,
+      link,
+      date,
+    };
+    response.render("projectCreate.hbs", model);
   }
-);
+});
 
 // edit project
 
@@ -348,82 +395,74 @@ app.get("/projectEdit/:id", function (request, response) {
   });
 });
 
-app.post(
-  "/projectEdit/:id",
-  upload.single("image"),
-  function (request, response) {
-    const id = request.params.id;
-    const title = request.body.title;
-    const category = request.body.category;
-    const description = request.body.description;
-    const repository = request.body.repository;
-    const link = request.body.link;
-    const date = request.body.date;
+app.post("/projectEdit/:id", function (request, response) {
+  const id = request.params.id;
+  const title = request.body.title;
+  const category = request.body.category;
+  const color = request.body.color;
+  const description = request.body.description;
+  const repository = request.body.repository;
+  const link = request.body.link;
+  const date = request.body.date;
 
-    const errorMessages = getErrorMessagesForProjects(
+  const errorMessages = getErrorMessagesForProjects(
+    title,
+    category,
+    color,
+    description,
+    date
+  );
+
+  if (!request.session.isLoggedIn) {
+    errorMessages.push("You have to log in");
+  }
+
+  if (errorMessages.length == 0) {
+    db.editProject(
       title,
       category,
+      color,
       description,
       repository,
       link,
-      date
+      date,
+      id,
+      function (error) {
+        if (error) {
+          errorMessages.push("Internal server error");
+          const model = {
+            errorMessages,
+            title,
+            category,
+            color,
+            description,
+            repository,
+            link,
+            date,
+            id,
+          };
+          response.render("editPost.hbs", model);
+        }
+        response.redirect("/projects");
+      }
     );
-
-    if (!request.file) {
-      errorMessages.push("Please upload a photo");
-    }
-
-    if (!request.session.isLoggedIn) {
-      errorMessages.push("You have to log in");
-    }
-
-    if (errorMessages.length == 0) {
-      const image = request.file.filename;
-
-      db.editProject(
+  } else {
+    const model = {
+      project: {
         title,
         category,
+        color,
         description,
-        image,
         repository,
         link,
         date,
-        id,
-        function (error) {
-          if (error) {
-            errorMessages.push("Internal server error");
-            const model = {
-              errorMessages,
-              title,
-              category,
-              description,
-              repository,
-              link,
-              date,
-              id,
-            };
-            response.render("editPost.hbs", model);
-          }
-          response.redirect("/projects");
-        }
-      );
-    } else {
-      const model = {
-        project: {
-          title,
-          category,
-          description,
-          repository,
-          link,
-          date,
-        },
-        id,
-        errorMessages,
-      };
-      response.render("projectEdit.hbs", model);
-    }
+      },
+      id,
+      errorMessages,
+    };
+    response.render("projectEdit.hbs", model);
   }
-);
+});
 
 // delete project
 
@@ -446,6 +485,7 @@ app.get("/sure/:id", function (request, response) {
 
 app.post("/projectDelete/:id", function (request, response) {
   const id = request.params.id;
+  const errorMessages = [];
 
   if (!request.session.isLoggedIn) {
     errorMessages.push("You have to log in");

@@ -1,16 +1,11 @@
 <h1 class="pageName">project edit</h1>
 {{#if errorMessages.length}}
   {{#each errorMessages}}
-    <p>{{this}}</p>
+    <p class="err">{{this}}</p>
   {{/each}}
 {{/if}}
 
-<form
-  class="form"
-  action="/projectEdit/{{project.id}}"
-  method="POST"
-  enctype="multipart/form-data"
->
+<form class="form" action="/projectEdit/{{id}}" method="POST">
   <div>
     <input
       class="inputField"
@@ -28,33 +23,48 @@
         type="radio"
         name="category"
         id="category1"
-        value="graphicDesign"
+        value="Graphic Design"
       />
       <label for="category1"></label>
     </div>
     <div class="choice">
-      <p>Web Development</p>
+      <p>Web Dev</p>
       <input
         class="radio"
         type="radio"
         name="category"
         id="category2"
-        value="webDevelopment"
+        value="Web Development"
       />
       <label for="category2"></label>
     </div>
     <div class="choice">
-      <p>3D Graphics</p>
+      <p>3D</p>
       <input
         class="radio"
         type="radio"
         name="category"
         id="category3"
-        value="3dGraphics"
+        value="3D Graphics"
       />
       <label for="category3"></label>
     </div>
   </div>
+  <div class="categoryChoiceColor">
+    <div id="btn1" class="choice">
+      <input class="radio" type="radio" name="color" value="#60e7a6" />
+      <label for="color1"></label>
+    </div>
+    <div id="btn2" class="choice">
+      <input class="radio" type="radio" name="color" value="#be46b5" />
+      <label for="color2"></label>
+    </div>
+    <div id="btn3" class="choice">
+      <input class="radio" type="radio" name="color" value="#bbb5fd" />
+      <label for="color3"></label>
+    </div>
+  </div>
+
   <div>
     <input
       class="inputField"
@@ -64,7 +74,7 @@
       value="{{project.description}}"
     />
   </div>
-  <div>
+  {{!-- <div>
     <input
       class="inputField"
       type="file"
@@ -72,7 +82,7 @@
       placeholder="image"
       value="{{project.image}}"
     />
-  </div>
+  </div> --}}
   <div>
     <input
       class="inputField"

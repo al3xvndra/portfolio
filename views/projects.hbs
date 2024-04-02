@@ -1,34 +1,50 @@
-<h1 class="pageName">projects</h1>
-<form action="/projects/category" method="GET">
-  <p>All</p>
-  <input type="radio" name="category" id="category0" value="" />
-  <label for="category1"></label>
-  <p>Graphic Design</p>
-  <input type="radio" name="category" id="category1" value="graphicDesign" />
-  <label for="category1"></label>
-  <p>Web Development</p>
-  <input type="radio" name="category" id="category2" value="webDevelopment" />
-  <label for="category2"></label>
-  <p>3D Graphics</p>
-  <input type="radio" name="category" id="category3" value="3dGraphics" />
-  <label for="category3"></label>
-  <input class="niceButton" type="submit" value="filter" />
-</form>
-{{#if projects.length}}
-  <ul>
-    {{#each projects}}
-      <li><a href="/projects/{{id}}">{{title}}</a></li>
-      {{#if ../isLoggedIn}}
-        <form action="/projectEdit/{{id}}" method="GET">
-          <input class="editButton" type="submit" value="edit" />
-        </form>
-        <form action="/sure/{{id}}" method="GET">
-          <input class="deleteButton" type="submit" value="delete" />
-        </form>
-      {{/if}}
-    {{/each}}
-  </ul>
+<div id="categories">
+  <div class="categoryForm">
+    <form action="/projects" method="GET">
+      <button id="cat0" class="categoryButton" type="submit">All</button>
+    </form>
+  </div>
+  <div class="categoryForm">
+    <form action="/projects/graphicDesign" method="GET">
+      <button id="cat1" class="categoryButton" type="submit">Graphic Design</button>
+    </form>
+  </div>
+  <div class="categoryForm">
+    <form action="/projects/webDevelopment" method="GET">
+      <button id="cat2" class="categoryButton" type="submit">Web Development</button>
+    </form>
+  </div>
+  <div class="categoryForm">
+    <form action="/projects/3dGraphics" method="GET">
+      <button id="cat3" class="categoryButton" type="submit">3D Graphics</button>
+    </form>
+  </div>
+</div>
 
+{{#if projects.length}}
+  <div id="projectsContainer">
+    {{#each projects}}
+      <div class="oneProject">
+        <div>
+          <h4>{{title}}</h4>
+        </div>
+        <div>
+          <button style="background-color: {{color}};" class="catButton">{{category}}</button>
+          <form action="/projects/{{id}}" method="GET">
+            <input class="niceButton" type="submit" value="see more" />
+          </form>
+        {{#if ../isLoggedIn}}
+          <form action="/projectEdit/{{id}}" method="GET">
+            <input class="editButton" type="submit" value="edit" />
+          </form>
+          <form action="/sure/{{id}}" method="GET">
+            <input class="deleteButton" type="submit" value="delete" />
+          </form>
+        {{/if}}
+        </div>
+      </div>
+    {{/each}}
+  </div>
 {{else}}
   <p>No projects atm</p>
 {{/if}}

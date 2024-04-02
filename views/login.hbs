@@ -1,7 +1,7 @@
 <h1 class="pageName">login</h1>
 {{#if errorMessages.length}}
   {{#each errorMessages}}
-    <p>{{this}}</p>
+    <p class="err">{{this}}</p>
   {{/each}}
 {{/if}}
 
@@ -23,6 +23,6 @@
     />
   </div>
   <div>
-    <input type="submit" value="log in" />
+    <input class="niceButton" type="submit" value="log in" />
   </div>
 </form>

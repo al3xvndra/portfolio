@@ -9,8 +9,7 @@ db.run(
     description TEXT,
     repository TEXT,
     link TEXT,
-    date TEXT,
-    image TEXT)`
+    date TEXT)`
 );
 
 db.run(
@@ -33,6 +32,33 @@ db.run(
 
 exports.getAllProjects = function (callback) {
   const query = "SELECT * FROM projects ORDER BY id DESC";
+
+  db.all(query, function (error, projects) {
+    callback(error, projects);
+  });
+};
+
+exports.getAllProjectsGD = function (callback) {
+  const query =
+    "SELECT * FROM projects WHERE category = 'Graphic Design' ORDER BY id DESC";
+
+  db.all(query, function (error, projects) {
+    callback(error, projects);
+  });
+};
+
+exports.getAllProjectsWD = function (callback) {
+  const query =
+    "SELECT * FROM projects WHERE category = 'Web Development' ORDER BY id DESC";
+
+  db.all(query, function (error, projects) {
+    callback(error, projects);
+  });
+};
+
+exports.getAllProjects3D = function (callback) {
+  const query =
+    "SELECT * FROM projects WHERE category = '3D Graphics' ORDER BY id DESC";
 
   db.all(query, function (error, projects) {
     callback(error, projects);
@@ -85,16 +111,16 @@ exports.addPhoto = function (projectID, projectImage, callback) {
 exports.createProject = function (
   title,
   category,
+  color,
   description,
-  image,
   repository,
   link,
   date,
   callback
 ) {
   const query =
-    "INSERT INTO projects (title, category, description, image, repository, link, date) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  const values = [title, category, description, image, repository, link, date];
+    "INSERT INTO projects (title, category, color, description, repository, link, date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  const values = [title, category, color, description, repository, link, date];
 
   db.run(query, values, function (error) {
     callback(error);
@@ -117,8 +143,8 @@ exports.getEditProject = function (id, callback) {
 exports.editProject = function (
   title,
   category,
+  color,
   description,
-  image,
   repository,
   link,
   date,
@@ -126,13 +152,13 @@ exports.editProject = function (
   callback
 ) {
   const query = `UPDATE projects
-  SET title = ?, category = ?, description = ?, image = ?, repository = ?, link = ?, date = ? WHERE id = ?;`;
+  SET title = ?, category = ?, color = ?, description = ?, repository = ?, link = ?, date = ? WHERE id = ?;`;
 
   const values = [
     title,
     category,
+    color,
     description,
-    image,
     repository,
     link,
     date,

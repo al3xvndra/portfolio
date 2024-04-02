@@ -1,4 +1,9 @@
 <div id="contact">
+  {{#if errorMessages.length}}
+    {{#each errorMessages}}
+      <p class="err">{{this}}</p>
+    {{/each}}
+  {{/if}}
   <div id="contactForm">
     <div>
       <h5>Let's stay in <span>touch</span></h5>

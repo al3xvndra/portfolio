@@ -11,3 +11,30 @@
   border: 1px var(--secondaryDark) solid;
   padding: 2%;
 }
+
+/* all projects */
+
+#projectsContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  padding: 20px;
+}
+
+.oneProject {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--primaryDark);
+  border: 1px var(--secondaryDark) solid;
+  padding: 5%;
+  height: 40vh;
+}
+
+.oneProject a {
+  font-family: "Playfair Display";
+  font-size: 34;
+  text-decoration: none;
+  color: var(--secondaryDark);
+}

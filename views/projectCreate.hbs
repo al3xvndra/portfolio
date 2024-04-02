@@ -1,106 +1,122 @@
 <h1 class="pageName">project create</h1>
 {{#if errorMessages.length}}
   {{#each errorMessages}}
-    <p>{{this}}</p>
+    <p class="err">{{this}}</p>
   {{/each}}
 {{/if}}
+<div>
+  <div>
+    <form class="form" action="/projectCreate" method="POST">
+      <div>
+        <input
+          class="inputField"
+          type="text"
+          name="title"
+          placeholder="title"
+          value="{{title}}"
+        />
+      </div>
+      <div class="categoryChoice">
+        <div class="choice">
+          <p>Graphic Design</p>
+          <input
+            class="radio"
+            type="radio"
+            name="category"
+            id="category1"
+            value="Graphic Design"
+          />
+          <label for="category1"></label>
+        </div>
+        <div class="choice">
+          <p>Web Dev</p>
+          <input
+            class="radio"
+            type="radio"
+            name="category"
+            id="category2"
+            value="Web Development"
+          />
+          <label for="category2"></label>
+        </div>
+        <div class="choice">
+          <p>3D</p>
+          <input
+            class="radio"
+            type="radio"
+            name="category"
+            id="category3"
+            value="3D Graphics"
+          />
+          <label for="category3"></label>
+        </div>
+      </div>
+      <div class="categoryChoiceColor">
+        <div id="btn1" class="choice">
+          <input class="radio" type="radio" name="color" value="#60e7a6" />
+          <label for="color1"></label>
+        </div>
+        <div id="btn2" class="choice">
+          <input class="radio" type="radio" name="color" value="#be46b5" />
+          <label for="color2"></label>
+        </div>
+        <div id="btn3" class="choice">
+          <input class="radio" type="radio" name="color" value="#bbb5fd" />
+          <label for="color3"></label>
+        </div>
+      </div>
 
-<form
-  class="form"
-  action="/projectCreate"
-  method="POST"
-  enctype="multipart/form-data"
->
-  <div>
-    <input
-      class="inputField"
-      type="text"
-      name="title"
-      placeholder="title"
-      value="{{title}}"
-    />
-  </div>
-  <div class="categoryChoice">
-    <div class="choice">
-      <p>Graphic Design</p>
-      <input
-        class="radio"
-        type="radio"
-        name="category"
-        id="category1"
-        value="graphicDesign"
-      />
-      <label for="category1"></label>
-    </div>
-    <div class="choice">
-      <p>Web Development</p>
-      <input
-        class="radio"
-        type="radio"
-        name="category"
-        id="category2"
-        value="webDevelopment"
-      />
-      <label for="category2"></label>
-    </div>
-    <div class="choice">
-      <p>3D Graphics</p>
-      <input
-        class="radio"
-        type="radio"
-        name="category"
-        id="category3"
-        value="3dGraphics"
-      />
-      <label for="category3"></label>
-    </div>
-  </div>
-  <div>
-    <input
-      class="inputField"
-      type="text"
-      name="description"
-      placeholder="description"
-      value="{{description}}"
-    />
+      <div>
+        <input
+          class="inputField"
+          type="text"
+          name="description"
+          placeholder="description"
+          value="{{description}}"
+        />
+      </div>
+      {{!-- <div>
+        <input
+          class="inputField"
+          type="file"
+          name="image"
+          placeholder="image"
+          value="{{image}}"
+        />
+      </div> --}}
+      <div>
+        <input
+          class="inputField"
+          type="text"
+          name="repository"
+          placeholder="repository"
+          value="{{repository}}"
+        />
+      </div>
+      <div>
+        <input
+          class="inputField"
+          type="text"
+          name="link"
+          placeholder="link"
+          value="{{link}}"
+        />
+      </div>
+      <div>
+        <input
+          class="inputField"
+          type="date"
+          name="date"
+          placeholder="date"
+          value="{{date}}"
+        />
+      </div>
+      <div>
+        <input class="niceButton" type="submit" value="create" />
+      </div>
+    </form>
   </div>
   <div>
-    <input
-      class="inputField"
-      type="file"
-      name="image"
-      placeholder="image"
-      value="{{image}}"
-    />
+
   </div>
-  <div>
-    <input
-      class="inputField"
-      type="text"
-      name="repository"
-      placeholder="repository"
-      value="{{repository}}"
-    />
-  </div>
-  <div>
-    <input
-      class="inputField"
-      type="text"
-      name="link"
-      placeholder="link"
-      value="{{link}}"
-    />
-  </div>
-  <div>
-    <input
-      class="inputField"
-      type="date"
-      name="date"
-      placeholder="date"
-      value="{{date}}"
-    />
-  </div>
-  <div>
-    <input class="niceButton" type="submit" value="create" />
-  </div>
-</form>
+</div>

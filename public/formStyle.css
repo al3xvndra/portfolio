@@ -1,5 +1,6 @@
 form {
   margin: 0;
+  padding: 0;
 }
 
 .form {
@@ -18,6 +19,12 @@ form {
   text-transform: uppercase;
 }
 
+.niceButton:hover {
+  border: 1px var(--primaryDark) solid;
+  background-color: var(--tertiaryDark);
+  color: var(--primaryDark);
+}
+
 .editButton {
   background-color: #60e7a6;
   border: 1px var(--secondaryDark) solid;
@@ -28,6 +35,10 @@ form {
   font-family: "Barlow";
   color: var(--secondaryDark);
   text-transform: uppercase;
+}
+
+.editButton:hover {
+  background-color: #4fbe88;
 }
 
 .deleteButton {
@@ -42,10 +53,70 @@ form {
   text-transform: uppercase;
 }
 
-.niceButton:hover {
-  border: 1px var(--primaryDark) solid;
+.deleteButton:hover {
+  background-color: #a7409f;
+}
+
+#categories {
+  display: flex;
+  justify-content: space-evenly;
+  border-bottom: 1px var(--secondaryDark) solid;
+  width: 100%;
+}
+
+.categoryForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-right: 1px var(--secondaryDark) solid;
+}
+
+.categoryForm form {
+  display: block;
+  width: 100%;
+}
+
+.categoryButton {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primaryDark);
+  border: none;
+  font-size: 14px;
+  padding: 4vh 0;
+  width: 100%;
+  font-family: "Barlow";
+  color: var(--secondaryDark);
+  text-transform: uppercase;
+}
+
+.catButton {
+  border: 1px var(--secondaryDark) solid;
+  border-radius: 20px;
+  padding: 8px 28px;
+  margin-top: 2vh;
+  font-size: 14px;
+  font-family: "Barlow";
+  color: var(--secondaryDark);
+  text-transform: uppercase;
+}
+
+#cat0:hover {
   background-color: var(--tertiaryDark);
   color: var(--primaryDark);
+}
+
+#cat1:hover {
+  background-color: #60e7a6;
+}
+
+#cat2:hover {
+  background-color: #be46b5;
+}
+
+#cat3:hover {
+  background-color: #bbb5fd;
 }
 
 .inputField {
@@ -69,11 +140,41 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 2% 0 0;
+  padding: 0 1% 0 0;
 }
 
 .choice p {
+  font-size: 12px;
   margin: 10% 0 3% 0;
+}
+
+.categoryChoiceColor {
+  display: flex;
+  padding-top: 1%;
+}
+
+.categoryChoiceColor #btn1 input[type="radio"] {
+  border: 3px #60e7a6 solid;
+}
+
+.categoryChoiceColor #btn1 input[type="radio"]:checked:before {
+  background: #60e7a6;
+}
+
+.categoryChoiceColor #btn2 input[type="radio"] {
+  border: 3px #be46b5 solid;
+}
+
+.categoryChoiceColor #btn2 input[type="radio"]:checked:before {
+  background: #be46b5;
+}
+
+.categoryChoiceColor #btn3 input[type="radio"] {
+  border: 3px #bbb5fd solid;
+}
+
+.categoryChoiceColor #btn3 input[type="radio"]:checked:before {
+  background: #bbb5fd;
 }
 
 input[type="radio"] {
@@ -81,7 +182,7 @@ input[type="radio"] {
   justify-content: center;
   align-items: center;
   appearance: none;
-  width: 120px;
+  width: 80px;
   height: 35px;
   border: 1px var(--secondaryDark) solid;
   border-radius: 20px;
@@ -105,4 +206,13 @@ input[type="radio"]:checked:before {
   justify-content: center;
   align-items: center;
   background: var(--secondaryDark);
+}
+
+.err {
+  border: 1px var(--secondaryDark) solid;
+  color: var(--primaryDark);
+  background-color: var(--tertiaryDark);
+  width: 40%;
+  margin-left: 10%;
+  padding: 1%;
 }
